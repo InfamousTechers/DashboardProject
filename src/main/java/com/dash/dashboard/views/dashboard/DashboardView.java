@@ -1,11 +1,14 @@
 package com.dash.dashboard.views.dashboard;
 
-import com.vaadin.flow.component.button.Button;
+//import com.vaadin.flow.component.Component;
+//import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.notification.Notification;
+//import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 //import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+//import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.dash.dashboard.views.main.MainView;
@@ -21,18 +24,20 @@ public class DashboardView extends HorizontalLayout {
 	 *
 	 */
 	private static final long serialVersionUID = -7468284506066059747L;
-	private TextField name;
-    private Button sayHello;
-
+    private Tabs tabs;
+    
     public DashboardView() {
         setId("dashboard-view");
-        name = new TextField("Your name");
-        sayHello = new Button("Say hello");
-        add(name, sayHello);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
-        sayHello.addClickListener(e -> {
-            Notification.show("Hello " + name.getValue());
-        });
+        add(dashTabs());
+    }
+
+    private Tabs dashTabs(){
+        Tab emails = new Tab("Announcements");
+        Tab assignments = new Tab("Pending Assignments");
+        Tab tests = new Tab("Upcoming Tests");
+        Tab gradebook = new Tab("Gradebook");
+        tabs = new Tabs(emails, assignments, tests, gradebook);
+        return tabs;
     }
 
 }
