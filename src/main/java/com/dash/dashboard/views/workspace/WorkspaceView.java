@@ -2,6 +2,7 @@ package com.dash.dashboard.views.workspace;
 
 // import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 // import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -10,8 +11,11 @@ import com.vaadin.flow.component.tabs.Tabs;
 // import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import java.util.HashMap;
+import java.util.Map;
 import com.dash.dashboard.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.component.Component;
 
 @Route(value = "Workspace", layout = MainView.class)
 @PageTitle("Workspace")
@@ -27,17 +31,75 @@ public class WorkspaceView extends HorizontalLayout {
 
     public WorkspaceView() {
         setId("dashboard-view");
-        add(workspaceTabs());
+        workspaceTabs();
     }
 
-    private Tabs workspaceTabs(){
+    private void workspaceTabs(){
+        // Creating workspace tabs
         Tab todo = new Tab("To-do List");
+        Div todoPage = new Div();
+        todoFunc(todoPage);
+                
         Tab note = new Tab("Notes");
+        Div notePage = new Div();
+        noteFunc(notePage);
+        
         Tab calc = new Tab("Calculator");
+        Div calcPage = new Div();
+        calcFunc(calcPage);
+        
         Tab timer = new Tab("Pomodoro Timer");
+        Div timerPage = new Div();
+        timerFunc(timerPage);
+        
         Tab cal = new Tab("Calender");
+        Div calPage = new Div();
+        calFunc(calPage);
+
+        Map<Tab, Component> tabsToPages = new HashMap<>();
+        tabsToPages.put(todo, todoPage);
+        tabsToPages.put(note, notePage);
+        tabsToPages.put(calc, calcPage);
+        tabsToPages.put(timer, timerPage);
+        tabsToPages.put(cal, calPage);
         tabs = new Tabs(todo, note, calc, timer, cal);
-        return tabs;
+        tabs.setFlexGrowForEnclosedTabs(1);
+        Div pages = new Div(todoPage, notePage, calcPage, timerPage, calPage);
+
+        tabs.addSelectedChangeListener(event -> {
+            tabsToPages.values().forEach(page -> page.setVisible(false));
+            Component selectedPage = tabsToPages.get(tabs.getSelectedTab());
+            selectedPage.setVisible(true);
+        });
+
+        tabs.setSelectedTab(cal);
+        tabs.setSelectedTab(todo);
+
+        add(tabs, pages);
+    }
+    
+    /**
+     * Functions for the pages
+     */
+
+    private void todoFunc(Div Page){
+        Page.setText("To Do List");
+    }
+
+    private void noteFunc(Div Page){
+        Page.setText("Notes");
+    }
+
+    private void calcFunc(Div Page){
+        Page.setText("Calculator");
+    }
+
+    private void timerFunc(Div Page){
+        Page.setText("Timer");
+    }
+
+    private void calFunc(Div Page){
+        Page.setText("Calender");
     }
 
 }
