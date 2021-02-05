@@ -1,14 +1,14 @@
 package com.dash.dashboard.views.workspace;
 
-// import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 // import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
-//import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-// import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.util.HashMap;
@@ -83,7 +83,19 @@ public class WorkspaceView extends HorizontalLayout {
      */
 
     private void todoFunc(Div Page){
-        Page.setText("To Do List");
+        Page.setText("To-do List");
+        // Verticallayout addTask = new Verticallayout();
+        // Horizontallayout taskView = new Horizontallayout();
+        // Page.add(addTask, taskView);
+        
+        // TextField task = new TextField();
+        // task.setLabel("Task");
+        // task.setLabel("What do you have to do?");
+        // Button add = new Button("Add", evt -> {
+
+        // });
+
+        
     }
 
     private void noteFunc(Div Page){
