@@ -5,6 +5,10 @@ and return Assignment data
 
 from bs4 import BeautifulSoup
 
-def assScrape(soup):
-    ## Code goes here
+def openCourse(course_name):
     return
+
+def assScrape(soup):
+    ##Code
+    return
+
