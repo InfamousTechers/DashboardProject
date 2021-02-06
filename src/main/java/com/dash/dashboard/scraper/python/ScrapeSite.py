@@ -41,14 +41,3 @@ class Site:
             return soup, self.session
         except:
             pass
-
-
-s = Scrape("phlbra004", "icui4cubenarsky")
-
-sites = Site(s)
-
-soup, session = sites.go_to_site('BIO1004F,2020')
-
-print(soup.prettify())
-
-
