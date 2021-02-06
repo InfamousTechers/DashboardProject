@@ -21,6 +21,13 @@ class Scrape:
             try:
                 home = session.get(self.VULA_HOMEPAGE_URL)
                 soup = BeautifulSoup(home.text, "html.parser")
-                return soup
+                return soup, session
             except:
                 pass
+
+    def getSites(self, soup, session):
+        sitesLink = soup.find_all('a', class_ = "Mrphs-toolsNav__menuitem--link")[5]['href']
+        sitesPage = session.get(sitesLink)
+        sitesSoup = BeautifulSoup(sitesPage.text, "html.parser")
+        sites = sitesSoup.find_all('a', target = "_top")
+        return sites
