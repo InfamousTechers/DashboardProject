@@ -2,9 +2,8 @@
 Scrape data(soup) from returned data from loginScape
 and return Assignment data
 """
-
-from loginScrape import Scrape
 from bs4 import BeautifulSoup
+
 
 class Site:
     def __init__(self, scraper):
@@ -41,14 +40,3 @@ class Site:
             return soup, self.session
         except:
             pass
-
-
-s = Scrape("phlbra004", "icui4cubenarsky")
-
-sites = Site(s)
-
-soup, session = sites.go_to_site('BIO1004F,2020')
-
-print(soup.prettify())
-
-
