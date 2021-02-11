@@ -26,7 +26,7 @@ sites_with_tests = Vula.with_tests() # [Key: site_name , Value: SiteTool object]
 # Getting all sites with Gradebook
 sites_with_gradebook = Vula.with_gradebook() # [Key: site_name , Value: SiteTool object]
 
-# Getting all assignments in all sites with assignments
+# Getting all assignments from all sites with assignments
 # E.g
 for site_name in sites_with_assignments:
     print("Printing assignments from ", site_name, " Site.")
