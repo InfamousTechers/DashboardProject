@@ -1,5 +1,6 @@
 package com.dash.dashboard.views.workspace;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -16,6 +17,7 @@ import java.util.Map;
 import com.dash.dashboard.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.component.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "Workspace", layout = MainView.class)
 @PageTitle("Workspace")
