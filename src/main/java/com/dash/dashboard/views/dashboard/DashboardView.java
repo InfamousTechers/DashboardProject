@@ -28,6 +28,7 @@ public class DashboardView extends HorizontalLayout {
 	 */
 	private static final long serialVersionUID = -7468284506066059747L;
     private Tabs tabs;
+    private Tabs subTabs;
     
     public DashboardView() {
         setId("dashboard-view");

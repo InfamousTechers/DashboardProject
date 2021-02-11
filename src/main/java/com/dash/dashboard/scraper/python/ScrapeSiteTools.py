@@ -1,5 +1,6 @@
 
 from bs4 import BeautifulSoup
+from tools import Announcements, Assignments, Gradebook, Tests
 
 class SiteTool:
     def __init__(self, site_soup_and_session):
@@ -34,7 +35,6 @@ class SiteTool:
                 pass
         return -1
 
-    
     def go_to_tool(self, tool_name):
         link = self.get_tool_link(tool_name)
         try:
@@ -42,7 +42,35 @@ class SiteTool:
             soup = BeautifulSoup(site.text, "html.parser")
             return soup, self.session
         except:
-            pass
-        return -1
+            print("there was an error getting the link")
 
-    
+    def has_announcements(self):
+        return self.tool_in_tools('Announcements')
+
+    def get_announcements(self):
+        announcemnts = Announcements(self.go_to_tool('Announcements'))
+        return announcemnts.get_all()
+
+    def has_assignments(self):
+        return self.tool_in_tools('Assignments')
+
+    def get_assignments(self):
+        assignments = Assignments(self.go_to_tool('Assignments'))
+        return assignments.get_all()
+
+    def has_tests(self):
+        return self.tool_in_tools('Tests & Quizzes')
+
+    def get_tests(self):
+        tests = Tests(self.go_to_tool('Tests & Quizzes'))
+        return tests.get_all()
+
+    def has_gradeBook(self):
+        return self.tool_in_tools('Gradebook')
+
+    def get_gradebook(self):
+        if self.has_gradeBook():
+            gradebook = Gradebook(self.go_to_tool('Gradebook'))
+            return gradebook.get_all()
+        else:
+            print("there is no gradebook")

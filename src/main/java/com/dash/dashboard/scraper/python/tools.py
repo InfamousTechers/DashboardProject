@@ -41,6 +41,13 @@ class Announcements:
                 pass
             self.announcements_list.append(days_announcements)
 
+    def __str__(self):
+        string = ""
+        ls = self.get_all()
+        for announcement in ls:
+            string = string + announcement + "\n"
+        return string
+
 class Tests:
     def __init__(self, tests_soup):
         self.soup, self.session = tests_soup
@@ -74,4 +81,74 @@ class Tests:
                 i += 1
         except:
             pass
+    
+    def __str__(self):
+        string = ""
+        ls = self.get_all()
+        for test in ls:
+            string = string + test + "\n"
+        return string
+
+class Assignments:
+    def __init__(self, assignment_soup):
+        self.soup, self.session = assignment_soup
+        self.assignments_list = []
+    
+    def get_all(self):
+        self.pack_assignments()
+        return self.assignments_list
+
+    def print_soup(self):
+        print(self.soup.prettify())
+
+    def get_table(self):
+        try:
+            table = self.soup.find("table", {"class" : "table table-hover table-striped table-bordered"})
+            table = table.find("tbody")
+            return table
+        except:
+            pass
+        
+    
+    def pack_assignments(self):
+        rows = self.soup.findAll("tr")
        
+        for row in rows: 
+            rowlst = []
+            try:
+                # print()
+                title = row.find("a", {"name":"asnActionLink"})["title"]
+                dueDate = (row.find("td", {"headers":"dueDate"})).find("span", {"class":"highlight"}).string
+                rowlst.append(title)
+                rowlst.append(dueDate)
+                self.assignments_list.append(rowlst)
+
+            except:
+                pass
+
+    
+    # def __str__(self):
+    #     string = ""
+    #     ls = self.get_all()
+    #     for test in ls:
+    #         string = string + test + "\n"
+    #     return string
+
+class Gradebook:
+    def __init__(self, gradebook_soup):
+        self.soup, self.session = gradebook_soup
+        self.gradebook_list = []
+    
+    def get_all(self):
+        self.pack_gradebook()
+        return self.gradebook_list
+
+        
+    def pack_gradebook(self):
+        table = self.soup.find("tbody", {"class":"gb-summary-assignments-tbody"})
+        rows = table.findAll("tr")
+        for row in rows:
+            title = row.find("span", {"class":"gb-summary-grade-title"}).string
+            mark = row.find("span", {"class":"gb-summary-grade-score-raw"}).string
+            out_of = row.find("span", {"class":"gb-summary-grade-score-outof"}).string
+            self.gradebook_list.append(f"{title}    {mark}{out_of}")
