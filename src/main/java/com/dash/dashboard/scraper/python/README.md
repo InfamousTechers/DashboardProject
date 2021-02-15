@@ -22,3 +22,25 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
 
     <<<<<<<<<<Vula site tool methods>>>>>>>>>>
     1. get_all()    ---> list       (returns site content in a string list)
+
+
+## DATABASES ##
+
+                             ______________________________
+>>>> GRADEBOOK TABLE        |Course | Title | Mark | Total |
+                            |-------|-------|------|-------|
+                            |       |       |      |       |
+                             __________________________
+>>>> ASSIGNMENTS TABLE      | Course | Title | Duedate |
+                            |--------|-------|---------|
+                            |        |       |         |
+
+                             _______________________
+>>>> ANNOUNCEMENTS TABLE    | Title | Author | Data |
+                            |-------|--------|------|
+                            |       |        |      |
+
+                       _____________________________________       
+>>>> TESTS TABLE      | Course | Title | Timelimit | Duedate|
+                      |--------|-------|-----------|--------|
+                      |        |       |           |        |

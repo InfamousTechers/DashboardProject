@@ -4,8 +4,11 @@ from tools import Announcements, Assignments, Gradebook, Tests
 
 class SiteTool:
     def __init__(self, site_soup_and_session):
-        self.soup , self.session = site_soup_and_session
-        self.tools = []
+        try:
+            self.soup , self.session = site_soup_and_session
+            self.tools = []
+        except:
+            pass
 
     def get_tools(self):
         try:
@@ -14,13 +17,16 @@ class SiteTool:
                 self.tools.append(title.string)
             return self.tools
         except:
-            print("Something went wrong!")
+            pass
 
     def tool_in_tools(self, tool_name):
         tools = self.get_tools()
-        for tool in tools:
-            if tool == tool_name:
-                return True
+        try:
+            for tool in tools:
+                if tool == tool_name:
+                    return True
+        except:
+            pass
         return False
 
     def get_tool_link(self, tool_name):
@@ -39,10 +45,10 @@ class SiteTool:
         link = self.get_tool_link(tool_name)
         try:
             site = self.session.get(link)
-            soup = BeautifulSoup(site.text, "html.parser")
+            soup = BeautifulSoup(site.text,"html.parser")
             return soup, self.session
         except:
-            print("there was an error getting the link")
+            pass
 
     def has_announcements(self):
         return self.tool_in_tools('Announcements')
