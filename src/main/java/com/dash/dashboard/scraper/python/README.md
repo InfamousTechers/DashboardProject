@@ -30,6 +30,7 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
 >>>> GRADEBOOK TABLE        |Course | Title | Mark | Total |
                             |-------|-------|------|-------|
                             |       |       |      |       |
+                            
                              __________________________
 >>>> ASSIGNMENTS TABLE      | Course | Title | Duedate |
                             |--------|-------|---------|
