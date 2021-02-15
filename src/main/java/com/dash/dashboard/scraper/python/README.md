@@ -26,25 +26,34 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
 
 ## DATABASES ##
 
-                             ______________________________
->>>> GRADEBOOK TABLE        |Course | Title | Mark | Total |
-                            |-------|-------|------|-------|
-                            |       |       |      |       |
+                           
+                         
+>>>> GRADEBOOK TABLE
+
+|Course | Title | Mark | Total |
+|-------|-------|------|-------|
+|       |       |      |       |
                             
-                             __________________________
->>>> ASSIGNMENTS TABLE      | Course | Title | Duedate |
-                            |--------|-------|---------|
-                            |        |       |         |
+                            
+>>>> ASSIGNMENTS TABLE      
 
-                             _______________________
->>>> ANNOUNCEMENTS TABLE    | Title | Author | Data |
-                            |-------|--------|------|
-                            |       |        |      |
+| Course | Title | Duedate |
+|--------|-------|---------|
+|        |       |         |
 
-                       _____________________________________       
->>>> TESTS TABLE      | Course | Title | Timelimit | Duedate|
-                      |--------|-------|-----------|--------|
-                      |        |       |           |        |
+                            
+>>>> ANNOUNCEMENTS TABLE   
+
+| Title | Author | Data |
+|-------|--------|------|
+|       |        |      |
+
+                     
+>>>> TESTS TABLE      
+
+| Course | Title | Timelimit | Duedate|
+|--------|-------|-----------|--------|
+|        |       |           |        |
                       
 #LESS IMPORTANT TABLES
 
