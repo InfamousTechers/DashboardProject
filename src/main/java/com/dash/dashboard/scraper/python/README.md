@@ -44,7 +44,7 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
                             
 >>>> ANNOUNCEMENTS TABLE   
 
-| Title | Author | Data |
+| Title | Author | Date |
 |-------|--------|------|
 |       |        |      |
 
