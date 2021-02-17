@@ -75,10 +75,10 @@ class Tests:
 
     def get_tests(self):
         table = self.get_table()
-        trows = table.findAll("tr")
-        for trow in trows:
-            row = []
-            try:
+        try:
+            trows = table.findAll("tr")
+            for trow in trows:
+                row = []
                 title = trow.find("span", {"class":"spanValue"}).string
                 row.append(title)
                 timelimit = trow.find("span", {"class":"currentSort"}).string
@@ -90,8 +90,8 @@ class Tests:
                     duedate = duedate.string
                 row.append(duedate)
                 self.tests_list.append(row)
-            except:
-                pass
+        except:
+            pass
 
     
     # def get_tests(self):
@@ -164,9 +164,13 @@ class Gradebook:
             table = self.soup.find("tbody", {"class":"gb-summary-assignments-tbody"})
             rows = table.findAll("tr")
             for row in rows:
+                grade = []
                 title = row.find("span", {"class":"gb-summary-grade-title"}).string
+                grade.append(title)
                 mark = row.find("span", {"class":"gb-summary-grade-score-raw"}).string
+                grade.append(mark)
                 out_of = row.find("span", {"class":"gb-summary-grade-score-outof"}).string
-                self.gradebook_list.append(f"{title}    {mark}{out_of}")
+                grade.append(out_of)
+                self.gradebook_list.append(grade)
         except:
             pass

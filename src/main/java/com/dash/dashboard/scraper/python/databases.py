@@ -19,62 +19,73 @@ class VulaDatabase:
         self.connection.commit()
         self.connection.close()
     
-class TestSites(VulaDatabase):
+class TestSitesTable(VulaDatabase):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS TestSites(id integer PRIMARY KEY, SiteName text NOT NULL)''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS TestSites(id integer PRIMARY KEY, SiteName text UNIQUE NOT NULL)''')
         self.connection.commit()
 
     def add_site(self, site_name):
-        # tuple_value = (site_name,)
-        command = "INSERT INTO IF NOT EXITS TestSites (SiteName) VALUES(?)"
-        self.cursor.execute(command, (site_name,))
-        self.connection.commit()
+        try:
+            command = "INSERT INTO TestSites (SiteName) VALUES(?)"
+            self.cursor.execute(command, (site_name,))
+            self.connection.commit()
+        except:
+            pass
 
     def get_sites(self):
         self.cursor.execute("SELECT * FROM TestSites")
         return self.cursor.fetchall()
 
-class GradebookSites(VulaDatabase):
+class GradebookSitesTable(VulaDatabase):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS GradebookSites(id integer PRIMARY KEY, SiteName text NOT NULL)''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS GradebookSites(id integer PRIMARY KEY, SiteName text UNIQUE NOT NULL)''')
         self.connection.commit()
 
     def add_site(self, site_name):
-        command = "INSERT INTO GradebookSites (SiteName) VALUES(?)"
-        self.cursor.execute(command, (site_name,))
-        self.connection.commit()
+        try:
+            command = "INSERT INTO GradebookSites (SiteName) VALUES(?)"
+            self.cursor.execute(command, (site_name,))
+            self.connection.commit()
+        except:
+            pass
 
     def get_sites(self):
         self.cursor.execute("SELECT * FROM GradebookSites")
         return self.cursor.fetchall()
 
-class AssignmentSites(VulaDatabase):
+class AssignmentSitesTable(VulaDatabase):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS AssignmentSites(id integer PRIMARY KEY, SiteName text NOT NULL)''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS AssignmentSites(id integer PRIMARY KEY, SiteName text UNIQUE NOT NULL)''')
         self.connection.commit()
 
     def add_site(self, site_name):
-        command = "INSERT INTO AssignmentSites (SiteName) VALUES(?)"
-        self.cursor.execute(command, (site_name,))
-        self.connection.commit()
+        try:
+            command = "INSERT INTO AssignmentSites (SiteName) VALUES(?)"
+            self.cursor.execute(command, (site_name,))
+            self.connection.commit()
+        except:
+            pass
 
     def get_sites(self):
         self.cursor.execute("SELECT * FROM AssignmentSites")
         return self.cursor.fetchall()
     
-class AnouncementSites(VulaDatabase):
+class AnouncementSitesTable(VulaDatabase):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS AnouncementSites(id integer PRIMARY KEY, SiteName text NOT NULL)''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS AnouncementSites(id integer PRIMARY KEY, SiteName text UNIQUE NOT NULL)''')
         self.connection.commit()
 
     def add_site(self, site_name):
-        command = "INSERT INTO AnouncementSites (SiteName) VALUES(?)"
-        self.cursor.execute(command, (site_name,))
-        self.connection.commit()
+        try:
+            command = "INSERT INTO AnouncementSites (SiteName) VALUES(?)"
+            self.cursor.execute(command, (site_name,))
+            self.connection.commit()
+        except:
+            pass
 
     def get_sites(self):
         self.cursor.execute("SELECT * FROM AnouncementSites")
@@ -109,7 +120,7 @@ class AnnouncementsTable(ToolsDb):
     def __init__(self):
         super().__init__()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Announcements
-        (id integer PRIMARY KEY, Preview text NOT NULL, Author text NOT NULL, Date text NOT NULL, Link text NOT NULL)''')
+        (id integer PRIMARY KEY, Preview text UNIQUE NOT NULL, Author text NOT NULL, Date text NOT NULL, Link text NOT NULL)''')
         self.connection.commit()
 
     def insert(self, preview, author, date, link):
@@ -133,13 +144,13 @@ class AnnouncementsTable(ToolsDb):
 
     def get_content(self):
         self.cursor.execute("SELECT * FROM Announcements")
-        return self.cursor.fetchall()
+        return self.cursor.fetchall()            
     
 class TestTable(ToolsDb):
     def __init__(self):
         super().__init__()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Tests
-        (id integer PRIMARY KEY, Title text NOT NULL, Timelimit text NOT NULL, Duedate text NOT NULL)''')
+        (id integer PRIMARY KEY, Title text UNIQUE NOT NULL, Timelimit text NOT NULL, Duedate text NOT NULL)''')
         self.connection.commit()
     
     def insert(self, title, time_limit, due_date):
@@ -180,7 +191,7 @@ class AssignmentsTable(ToolsDb):
     def __init__(self):
         super().__init__()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Assignments
-        (id integer PRIMARY KEY,Course text NOT NULL, Title text NOT NULL, Duedate text NOT NULL)''')
+        (id integer PRIMARY KEY,Course text NOT NULL, Title text UNIQUE NOT NULL, Duedate text NOT NULL)''')
         self.connection.commit()
 
     def insert(self,course, title, duedate):
@@ -221,7 +232,7 @@ class GradebookTable(ToolsDb):
     def __init__(self):
         super().__init__()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Gradebook
-        (id integer PRIMARY KEY,Course text NOT NULL, Title text NOT NULL, Mark text NOT NULL, Total text NOT NULL)''')
+        (id integer PRIMARY KEY,Course text NOT NULL, Title text UNIQUE NOT NULL, Mark text NOT NULL, Total text NOT NULL)''')
         self.connection.commit()
 
     def insert(self, course, title, mark, total):
@@ -259,3 +270,5 @@ class GradebookTable(ToolsDb):
             contents[row[0]] = ls
         self.connection.close()
         return contents
+
+

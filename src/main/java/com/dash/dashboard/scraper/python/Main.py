@@ -3,58 +3,44 @@
 from loginScrape import Scrape
 from ScrapeSite import Site
 from ScrapeSiteTools import SiteTool
+from databases import AnouncementSitesTable, AssignmentSitesTable, AssignmentsTable, GradebookSitesTable, TestSitesTable
 from tools import Announcements, Tests
+from configuration import Configuration
 
-# Loging in
-try:
-    s = Scrape("student number", "password")
 
+def main():
+    # Loging in
+    studentnumber = input("Enter your student number: ")
+    password = input("Enter you password: ")
+    s = Scrape(studentnumber, password)
+    print("logging you in... ")
     Vula = Site(s.login())
-    # Getting all sites to be scrapped : Vula.get_scraping_sites()      #--> [Key: site_name , Value: SiteTool object]
 
-    # Getting all sites with announcements: Vula.with_announcements()   #--> [Key: site_name , Value: SiteTool object]
+    config = Configuration(Vula)
+    
+    print("Fetching your data on Vula....")
 
-    # Getting all sites with assignments: Vula.with_assignments()       #--> [Key: site_name , Value: SiteTool object]
+    # print(config.updateSitesTables())
 
-    # Getting all sites with Tests: Vula.with_tests()                   #--> [Key: site_name , Value: SiteTool object]
-
-    # Getting all sites with Gradebook: Vula.with_gradebook()           #--> [Key: site_name , Value: SiteTool object]
-
-    # Getting all assignments from all sites with assignments
-    # E.g
-    for site_name in Vula.with_assignments:
-        assignments = Vula.with_assignments[site_name].get_assignments()
-        for assignment in assignments:
-            print(assignment)
+    if config.updateAnnouncementsTable():
+        print("Printing Annouments...")
+        config.printAnnouncements()
         print()
 
-    # Getting all gradebooks from all sites with gradebooks
-    # E.g
-    for site_name in Vula.with_gradebook:
-        print("The gradebook for ", site_name, " course.")
-        grades = Vula.with_gradebook[site_name].get_gradebook()
-        for grade in grades:
-            print(grade)
+    if config.updateAssignmentsTable():
+        print("Printing Assignments...")
+        config.printAssignments()
         print()
 
-    # Getting all tests from all sites wites tests and quizes
-    # E.g
-    for site_name in Vula.with_tests():
-        print("Scraping ", site_name )
-        tests = Vula.with_tests()[site_name].get_tests()
-        if tests:
-            print("The tests from ", site_name, " site")
-            for test in tests:
-                print(test)
-            print()
-        else:
-            continue
+    if config.updateTestsTable():
+        print("Printing tests...")
+        config.printTests()
+        print()
 
-    # sites = Vula.with_assignments()
-    # tests = sites["MAM1000W (2020)"].get_assignments()
-    # for test in tests:
-    #     print(test)
+    if config.updateGradebook():
+        print("Printing gradebook...")
+        config.printGradebook()
+        print()
 
-except:
-    print("Please check your internet connection!!!")
-
+if __name__ == "__main__":
+    main()
