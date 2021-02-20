@@ -10,6 +10,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.dash.dashboard.views.main.MainView;
 import com.dash.dashboard.workspaceClasses.State;
 import com.dash.dashboard.workspaceClasses.Task;
@@ -168,109 +170,123 @@ public class WorkspaceView extends VerticalLayout {
         Div calc = new Div();
         calc.setWidth("50%");
         Div calcHistory = new Div();
-        calcHistory.setText("History");
+        Details hisDetails = new Details();
+        hisDetails.setSummaryText("History");
+        VerticalLayout calcHisLayout = new VerticalLayout();
 
         // Calculator
         TextField display = new TextField();
-        display.setLabel("");
+        display.setLabel(" ");
+        display.setValue("0");
+        display.setWidth("70%");
+
 
         HorizontalLayout row1 = new HorizontalLayout();
-        Button percentage = new Button("%", click -> {
-
+        Button lBrac = new Button("(", click -> {
+            updateCalc(display, "(");
         });
         Button clearEntered = new Button("CE", click -> {
-
+            display.setValue("0");
         });
         Button clear = new Button("C", click -> {
-
+            display.setLabel(" ");
+            display.setValue("0");
         });
         Button del = new Button("Del", click -> {
-
+            if (display.getValue().length() == 1){
+                display.setValue("0");
+            } else {
+                display.setValue((display.getValue()).substring(0, display.getValue().length()-1));
+            }
         });
-        row1.add(percentage, clearEntered, clear, del);
+        row1.add(lBrac, clearEntered, clear, del);
         
         HorizontalLayout row2 = new HorizontalLayout();
-        Button overX = new Button("1\\x", click -> {
-            
+        Button rBrac = new Button(")", click -> {
+            updateCalc(display, ")");
         });
-        Button squared = new Button("x^2", click -> {
-            
+        Button squared = new Button("^", click -> {
+            updateCalc(display, "^");
         });
         Button squareRoot = new Button("sqrt", click -> {
-            
+            display.setValue("sqrt(" + display.getValue() + ")");
         });
-        Button divide = new Button("\\", click -> {
-            
+        Button divide = new Button("/", click -> {
+            updateLabel(display, "/");
         });
-        row2.add(overX, squared, squareRoot, divide);
+        row2.add(rBrac, squared, squareRoot, divide);
         
         HorizontalLayout row3 = new HorizontalLayout();
         Button seven = new Button("7", click -> {
-            
+            updateCalc(display, "7");
         });
         Button eight = new Button("8", click -> {
-            
+            updateCalc(display, "8");
         });
         Button nine = new Button("9", click -> {
-            
+            updateCalc(display, "9");
         });
         Button multiply = new Button("x", click -> {
-            
+            updateLabel(display, "*");
         });
         row3.add(seven, eight, nine, multiply);
         
         HorizontalLayout row4 = new HorizontalLayout();
         Button four = new Button("4", click -> {
-
+            updateCalc(display, "4");
         });
         Button five = new Button("5", click -> {
-
+            updateCalc(display, "5");
         });
         Button six = new Button("6", click -> {
-
+            updateCalc(display, "6");
         });
         Button minus = new Button("-", click -> {
-
+            updateLabel(display, "-");
         });
         row4.add(four, five, six, minus);
         
         HorizontalLayout row5 = new HorizontalLayout();
         Button one = new Button("1", click -> {
-
+            updateCalc(display, "1");
         });
         Button two = new Button("2", click -> {
-
+            updateCalc(display, "2");
         });
         Button three = new Button("3", click -> {
-            
+            updateCalc(display, "3");
         });
         Button plus = new Button("+", click -> {
-            
+            updateLabel(display, "+");
         });
         row5.add(one, two, three, plus);
         
         HorizontalLayout row6 = new HorizontalLayout();
         Button plus_minus = new Button("+\\-", click -> {
-            
+            Double value = Double.parseDouble(display.getValue()) * -1;
+            display.setValue(Double.toString(value));
         });
         Button zero = new Button("0", click -> {
-            
+            updateCalc(display, "0");
         });
         Button comma = new Button(",", click -> {
-            
+            updateCalc(display, ".");
         });
         Button equals = new Button("=", click -> {
-            
+            updateLabel(display, "");
+            double ans = eval(display.getLabel());
+            display.setValue("ans: " + Double.toString(ans));
+            calcHisLayout.add(new Span(display.getLabel() + " = " + Double.toString(ans)));
         });
         row6.add(plus_minus, zero, comma, equals);
 
         VerticalLayout calcLayout = new VerticalLayout();
         calcLayout.add(display, row1, row2, row3, row4, row5, row6);
         calc.add(calcLayout);
+        hisDetails.addContent(calcHisLayout);
+        calcHistory.add(hisDetails);
         Page.add(calcDivs);
         calcDivs.add(calc, calcHistory);
-
-
     }
 
     private void timerFunc(Div Page){
@@ -315,7 +331,100 @@ public class WorkspaceView extends VerticalLayout {
             return wrapper;
         }));
 
-
         return status;
+    }
+
+    // Calculator operations
+    public static double eval(final String str) {
+        return new Object(){
+            int pos = -1, ch;
+
+            void nextChar() {
+                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+            }
+
+            boolean eat(int charToEat){
+                while (ch == ' ') nextChar();
+                if (ch == charToEat){
+                    nextChar();
+                    return true;
+                }
+                return false;
+            }
+
+            double parse() {
+                nextChar();
+                double x = parseExpression();
+                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+                return x;
+            }
+
+            double parseExpression(){
+                double x = parseTerm();
+                for (;;) {
+                    if (eat('+')) x += parseTerm();
+                    else if (eat('+')) x -= parseTerm();
+                    else return x;
+                }
+            }
+
+            double parseTerm(){
+                double x = parseFactor();
+                for (;;){
+                    if (eat('*')) x *= parseFactor();
+                    else if (eat('/')) x /= parseFactor();
+                    else return x;
+                }
+            }
+
+            double parseFactor(){
+                if (eat('+')) return parseFactor();
+                if (eat('-')) return -parseFactor();
+
+                double x;
+                int startPos = this.pos;
+                if (eat('(')) {
+                    x = parseExpression();
+                    eat(')');
+                } else if ((ch >= '0' && ch <= '9') || ch == '.'){
+                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+                    x = Double.parseDouble(str.substring(startPos, this.pos));
+                } else if (ch >= 'a' && ch <= 'z'){
+                    while (ch >= 'a' && ch <= 'z') nextChar();
+                    String func = str.substring(startPos, this.pos);
+                    x = parseFactor();
+                    if (func.equals("sqrt")) x = Math.sqrt(x);
+                    else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
+                    else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
+                    else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
+                    else throw new RuntimeException("Unknown function: " + func);
+                } else {
+                    throw new RuntimeException("Unexpected: " + (char)ch);
+                }
+
+                if (eat('^')) x = Math.pow(x, parseFactor());
+
+                return x;
+            }
+        }.parse();
+    }
+
+    private void updateCalc(TextField display, String val){
+        if (display.getValue().equals("0")){
+            display.setValue("");
+        } else if (display.getValue().startsWith("ans: ")){
+            display.setValue("");
+            display.setLabel(" ");
+        }
+        display.setValue(display.getValue() + val);
+    }
+
+    private void updateLabel(TextField display, String opr){
+        if (display.getValue().startsWith("ans: ")){
+            display.setLabel(" ");
+            display.setValue(display.getValue().substring(5));
+        }
+        display.setLabel(display.getLabel() + display.getValue() + opr);
+        display.setValue("0");
     }
 }
