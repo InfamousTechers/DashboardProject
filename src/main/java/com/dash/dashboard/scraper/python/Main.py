@@ -3,34 +3,44 @@
 from loginScrape import Scrape
 from ScrapeSite import Site
 from ScrapeSiteTools import SiteTool
+from databases import AnouncementSitesTable, AssignmentSitesTable, AssignmentsTable, GradebookSitesTable, TestSitesTable
 from tools import Announcements, Tests
+from configuration import Configuration
 
 
-# Loging in
-s = Scrape("Student number", "password")
+def main():
+    # Loging in
+    studentnumber = input("Enter your student number: ")
+    password = input("Enter you password: ")
+    s = Scrape(studentnumber, password)
+    print("logging you in... ")
+    Vula = Site(s.login())
 
-Vula = Site(s)
+    config = Configuration(Vula)
+    
+    print("Fetching your data on Vula....")
 
-# Getting all sites to be scrapped
-sites_to_scrape = Vula.get_scraping_sites() # [Key: site_name , Value: SiteTool object]
+    # print(config.updateSitesTables())
 
-# Getting all sites with announcements
-sites_with_announcements = Vula.with_announcements() # [Key: site_name , Value: SiteTool object]
+    if config.updateAnnouncementsTable():
+        print("Printing Annouments...")
+        config.printAnnouncements()
+        print()
 
-# Getting all sites with assignments
-sites_with_assignments = Vula.with_assignments() # [Key: site_name , Value: SiteTool object]
+    if config.updateAssignmentsTable():
+        print("Printing Assignments...")
+        config.printAssignments()
+        print()
 
-# Getting all sites with Tests
-sites_with_tests = Vula.with_tests() # [Key: site_name , Value: SiteTool object]
+    if config.updateTestsTable():
+        print("Printing tests...")
+        config.printTests()
+        print()
 
-# Getting all sites with Gradebook
-sites_with_gradebook = Vula.with_gradebook() # [Key: site_name , Value: SiteTool object]
+    if config.updateGradebook():
+        print("Printing gradebook...")
+        config.printGradebook()
+        print()
 
-# Getting all assignments from all sites with assignments
-# E.g
-for site_name in sites_with_assignments:
-    print("Printing assignments from ", site_name, " Site.")
-    assignments = sites_with_assignments[site_name].get_assignments()
-    for assignment in assignments:
-        print(assignment)
-    print()
+if __name__ == "__main__":
+    main()

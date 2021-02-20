@@ -3,11 +3,13 @@ Scrape data(soup) from returned data from loginScape
 and return Assignment data
 """
 from bs4 import BeautifulSoup
+from ScrapeSiteTools import SiteTool
 
 
 class Site:
     def __init__(self, scraper):
-        self.soup , self.session = scraper.login()
+        self.s = scraper
+        self.soup , self.session = scraper
         self.sites = []
     
     def get_sites(self):
@@ -16,13 +18,6 @@ class Site:
             self.sites.append(title.string)
         return self.sites
 
-    def site_in_sites(self, site_name):
-        sites = self.get_sites()
-        for site in sites:
-            if site == site_name:
-                return True
-        return False
-    
     def get_scraping_sites(self):
         to_be_scraped = {}
         Vula = Site(self.s)
@@ -67,6 +62,13 @@ class Site:
             if site.has_gradeBook():
                 sites[site_name] = site
         return sites
+
+    def site_in_sites(self, site_name):
+        sites = self.get_sites()
+        for site in sites:
+            if site == site_name:
+                return True
+        return False
     
     def get_site_link(self, site_name):
         if self.site_in_sites(site_name):
@@ -75,7 +77,7 @@ class Site:
                 link = self.soup.findAll("a", attributes)
                 return link[0]["href"] 
             except:
-                print("there was an exception")
+                pass
 
     def go_to_site(self, site_name):
         link = self.get_site_link(site_name)
