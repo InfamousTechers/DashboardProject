@@ -51,32 +51,32 @@ class SiteTool:
             pass
 
     def has_announcements(self):
-        return self.tool_in_tools('Announcements')
+        return self.tool_in_tools('AnnouncementsTable')
 
     def get_announcements(self):
-        announcemnts = Announcements(self.go_to_tool('Announcements'))
+        announcemnts = Announcements(self.go_to_tool('AnnouncementsTable'))
         return announcemnts.get_all()
 
     def has_assignments(self):
-        return self.tool_in_tools('Assignments')
+        return self.tool_in_tools('AssignmentsTable')
 
     def get_assignments(self):
-        assignments = Assignments(self.go_to_tool('Assignments'))
+        assignments = Assignments(self.go_to_tool('AssignmentsTable'))
         return assignments.get_all()
 
     def has_tests(self):
-        return self.tool_in_tools('Tests & Quizzes')
+        return self.tool_in_tools('TestsTable & Quizzes')
 
     def get_tests(self):
-        tests = Tests(self.go_to_tool('Tests & Quizzes'))
+        tests = Tests(self.go_to_tool('TestsTable & Quizzes'))
         return tests.get_all()
 
     def has_gradeBook(self):
-        return self.tool_in_tools('Gradebook')
+        return self.tool_in_tools('GradebookTable')
 
     def get_gradebook(self):
         if self.has_gradeBook():
-            gradebook = Gradebook(self.go_to_tool('Gradebook'))
+            gradebook = Gradebook(self.go_to_tool('GradebookTable'))
             return gradebook.get_all()
         else:
             print("there is no gradebook")

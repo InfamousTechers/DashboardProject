@@ -20,27 +20,36 @@ def main():
     
     print("Fetching your data on Vula....")
 
-    # print(config.updateSitesTables())
+    print(config.updateSitesTables())
 
+    print("Getting Annouments...")
     if config.updateAnnouncementsTable():
-        print("Printing Annouments...")
         config.printAnnouncements()
         print()
+    else:
+        print("Failed to get AnnouncementsTable!!")
 
+    print("Getting AssignmentsTable...")
     if config.updateAssignmentsTable():
-        print("Printing Assignments...")
         config.printAssignments()
         print()
-
+    else:
+        print("Failed to get AssignmentsTable!!")
+        
+    print("Getting tests...")
     if config.updateTestsTable():
-        print("Printing tests...")
         config.printTests()
         print()
-
+    else:
+        print("Failed to get tests!!!")
+        
+    print("Getting gradebook...")
     if config.updateGradebook():
-        print("Printing gradebook...")
         config.printGradebook()
         print()
+    else:
+        print("Print failed to get gradebook!!")
+
 
 if __name__ == "__main__":
     main()

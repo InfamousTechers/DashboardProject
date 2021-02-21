@@ -29,13 +29,13 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
 
         [Key: site_name , Value: SiteTool object]
 
-# Getting all sites with announcements:
+# Getting all sites with announcementsTable:
 
     sites = Vula.with_announcements()  
     
         [Key: site_name , Value: SiteTool object]
 
-# Getting all sites with assignments:
+# Getting all sites with assignmentsTable:
 
     sites = Vula.with_assignments()
         [Key: site_name , Value: SiteTool object]
@@ -50,11 +50,11 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
     sites = Vula.with_gradebook()
         [Key: site_name , Value: SiteTool object]
 
-# Getting all assignments from all sites with assignments
+# Getting all assignmentsTable from all sites with assignmentsTable
     # E.g
     for site_name in Vula.with_assignments:
-        assignments = Vula.with_assignments[site_name].get_assignments()
-        for assignment in assignments:
+        assignmentsTable = Vula.with_assignments[site_name].get_assignments()
+        for assignment in assignmentsTable:
             print(assignment)
         print()
 
@@ -66,22 +66,22 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
             print(grade)
         print()
 
-# Getting all tests from all sites wites tests and quizes
+# Getting all testsTable from all sites wites testsTable and quizes
     # E.g
     for site_name in Vula.with_tests():
         print("Scraping ", site_name )
-        tests = Vula.with_tests()[site_name].get_tests()
-        if tests:
-            print("The tests from ", site_name, " site")
-            for test in tests:
+        testsTable = Vula.with_tests()[site_name].get_tests()
+        if testsTable:
+            print("The testsTable from ", site_name, " site")
+            for test in testsTable:
                 print(test)
             print()
         else:
             continue
 
 # sites = Vula.with_assignments()
-    # tests = sites["MAM1000W (2020)"].get_assignments()
-    # for test in tests:
+    # testsTable = sites["MAM1000W (2020)"].get_assignments()
+    # for test in testsTable:
     #     print(test)
 
 
@@ -105,9 +105,9 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
                             
 >>>> ANNOUNCEMENTS TABLE   
 
-| Title | Author | Date | link |
-|-------|--------|------|------|
-|       |        |      |      |
+| Preview | Author | Date | link |
+|---------|--------|------|------|
+|         |        |      |      |
 
                      
 >>>> TESTS TABLE      
@@ -140,7 +140,7 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
     for site_name in sites:
         assignementsTable.add_site(site_name)
 
-## Add sites with announcements to the AnouncementSites table
+## Add sites with announcementsTable to the AnouncementSites table
 >>> Create the table object
     announcementsTable  = AnouncementSitesTable()
 
@@ -149,7 +149,7 @@ Vula_site_tool = Toolname(Vula_site.go_to_tool('Toolname'))
     for site_name in sites:
         announcementsTable.add_site(site_name)
 
-## Add sites with tests and quizzes to the TestSites table
+## Add sites with testsTable and quizzes to the TestSites table
 >>>Create the table object
     testsTable  = TestSitesTable()
 

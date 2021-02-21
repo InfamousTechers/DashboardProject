@@ -119,13 +119,13 @@ class ToolsDb:
 class AnnouncementsTable(ToolsDb):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Announcements
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS AnnouncementsTable
         (id integer PRIMARY KEY, Preview text UNIQUE NOT NULL, Author text NOT NULL, Date text NOT NULL, Link text NOT NULL)''')
         self.connection.commit()
 
     def insert(self, preview, author, date, link):
         try:
-            sqlite_insert_with_param = """INSERT INTO Announcements
+            sqlite_insert_with_param = """INSERT INTO AnnouncementsTable
                             (Preview, Author, Date, Link) 
                             VALUES (?, ?, ?, ?);"""
 
@@ -143,19 +143,19 @@ class AnnouncementsTable(ToolsDb):
         self.insert(preview, author, date, link)
 
     def get_content(self):
-        self.cursor.execute("SELECT * FROM Announcements")
+        self.cursor.execute("SELECT * FROM AnnouncementsTable")
         return self.cursor.fetchall()            
     
 class TestTable(ToolsDb):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Tests
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS TestsTable
         (id integer PRIMARY KEY, Title text UNIQUE NOT NULL, Timelimit text NOT NULL, Duedate text NOT NULL)''')
         self.connection.commit()
     
     def insert(self, title, time_limit, due_date):
         try:
-            command = """ INSERT INTO Tests
+            command = """ INSERT INTO TestsTable
             (Title, Timelimit, Duedate)
             VALUES (?, ?, ?);"""
 
@@ -172,7 +172,7 @@ class TestTable(ToolsDb):
         self.insert(title, timelimit, duedate)
 
     def get_content(self):
-        self.cursor.execute("SELECT * FROM Tests")
+        self.cursor.execute("SELECT * FROM TestsTable")
         return self.cursor.fetchall()
 
     def list_content(self): #--> dictionary
@@ -190,13 +190,13 @@ class TestTable(ToolsDb):
 class AssignmentsTable(ToolsDb):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Assignments
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS AssignmentsTable
         (id integer PRIMARY KEY,Course text NOT NULL, Title text UNIQUE NOT NULL, Duedate text NOT NULL)''')
         self.connection.commit()
 
     def insert(self,course, title, duedate):
         try:
-            sqlite_insert_with_param = """INSERT INTO Assignments
+            sqlite_insert_with_param = """INSERT INTO AssignmentsTable
                             (Course, Title, Duedate) 
                             VALUES (?, ?, ?);"""
 
@@ -213,7 +213,7 @@ class AssignmentsTable(ToolsDb):
         self.insert(course, title, duedate)
 
     def get_content(self):
-        self.cursor.execute("SELECT * FROM Assignments")
+        self.cursor.execute("SELECT * FROM AssignmentsTable")
         return self.cursor.fetchall()
 
     def list_content(self): #--> dictionary
@@ -231,13 +231,13 @@ class AssignmentsTable(ToolsDb):
 class GradebookTable(ToolsDb):
     def __init__(self):
         super().__init__()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Gradebook
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS GradebookTable
         (id integer PRIMARY KEY,Course text NOT NULL, Title text UNIQUE NOT NULL, Mark text NOT NULL, Total text NOT NULL)''')
         self.connection.commit()
 
     def insert(self, course, title, mark, total):
         try:
-            sqlite_insert_with_param = """INSERT INTO Gradebook
+            sqlite_insert_with_param = """INSERT INTO GradebookTable
                             (Course, Title, Mark, Total) 
                             VALUES (?, ?, ?, ?);"""
 
@@ -255,7 +255,7 @@ class GradebookTable(ToolsDb):
         self.insert(course, title, mark, total)
 
     def get_content(self):
-        self.cursor.execute("SELECT * FROM Gradebook")
+        self.cursor.execute("SELECT * FROM GradebookTable")
         return self.cursor.fetchall()
 
     def list_content(self): #--> dictionary
