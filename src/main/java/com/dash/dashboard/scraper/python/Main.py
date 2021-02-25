@@ -11,45 +11,61 @@ from configuration import Configuration
 def main():
     # Loging in
     studentnumber = input("Enter your student number: ")
-    password = input("Enter you password: ")
+    password = input("Enter your password: ")
     s = Scrape(studentnumber, password)
     print("logging you in... ")
     Vula = Site(s.login())
 
-    config = Configuration(Vula)
+    announcements = Vula.with_announcements()
+
+    print(announcements)
+
+
+    # config = Configuration(Vula)
     
-    print("Fetching your data on Vula....")
+    # if input("Refresh all? [y/n]: ").lower() == "y":
+    #     print("Fetching your data from Vula....")
+    #     config.updateAnnouncementsTable()
+    #     config.updateAssignmentsTable()
+    #     config.updateTestsTable()
+    #     config.updateGradebook()
 
-    print(config.updateSitesTables())
+    # elif input("Refresh Announcements? [y/n]: ").lower() == "y":
+    #     print("Fetching your announcements from Vula....")
+    #     config.updateAnnouncementsTable()
 
-    print("Getting Annouments...")
-    if config.updateAnnouncementsTable():
-        config.printAnnouncements()
-        print()
-    else:
-        print("Failed to get AnnouncementsTable!!")
+    # elif input("Refresh Assignments? [y/n]: ").lower() == "y":
+    #     print("Fetching your assignments on Vula....")
+    #     config.updateAssignmentsTable()
 
-    print("Getting AssignmentsTable...")
-    if config.updateAssignmentsTable():
-        config.printAssignments()
-        print()
-    else:
-        print("Failed to get AssignmentsTable!!")
-        
-    print("Getting tests...")
-    if config.updateTestsTable():
-        config.printTests()
-        print()
-    else:
-        print("Failed to get tests!!!")
-        
-    print("Getting gradebook...")
-    if config.updateGradebook():
-        config.printGradebook()
-        print()
-    else:
-        print("Print failed to get gradebook!!")
+    # elif input("Refresh Tests? [y/n]: ").lower() == "y":
+    #     print("Fetching your tests from Vula....")
+    #     config.updateTestsTable()
 
+    # elif input("Refresh Gradebook? [y/n]: ").lower() == "y":
+    #     print("Fetching your gradebook from Vula....")
+    #     config.updateGradebook()
+    
+
+    # print(config.updateSitesTables())
+
+    # if input("Print Announcements? [y/n]: ").lower() == "y":
+    #     print("Printing Announcements...")
+    #     config.printAnnouncements()
+    #     print()
+    # if input("Print Assignments [y/n]").lower() == "y":
+    #     print("Printing Assignments...")
+    #     config.printAssignments()
+    #     print()
+
+    # if input("Print tests? [y/n]").lower() == "y":
+    #     print("Printing tests...")
+    #     config.printTests()
+    #     print()
+    # if input("Print gradebook? [y/n]").lower() == "y":
+    #     print("Printing gradebook...")
+    #     config.printGradebook()
+    #     print()
 
 if __name__ == "__main__":
     main()

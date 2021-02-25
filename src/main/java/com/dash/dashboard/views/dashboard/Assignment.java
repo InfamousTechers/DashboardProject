@@ -17,4 +17,15 @@ public class Assignment{
         this.DueDate = DueDate;
     }
 
+    public String getCourse(){
+        return Course;
+    }
+
+    public String getTitle(){
+        return Title;
+    }
+
+    public String getDueDate(){
+        return DueDate;
+    }
 }

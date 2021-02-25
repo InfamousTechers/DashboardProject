@@ -1,6 +1,9 @@
 package com.dash.dashboard.views.dashboard;
 
-import com.google.common.collect.Table;
+import com.dash.dashboard.scraper.java.AnnouncementsTable;
+import com.dash.dashboard.scraper.java.AssignmentsTable;
+import com.dash.dashboard.scraper.java.GradebookTable;
+import com.dash.dashboard.scraper.java.TestsTable;
 import com.vaadin.flow.component.Component;
 //import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -10,7 +13,10 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 //import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 //import com.vaadin.flow.component.textfield.TextField;
@@ -43,19 +49,19 @@ public class DashboardView extends HorizontalLayout {
     }
 
     private void dashTabs(){
-        Tab emails = new Tab("AnnouncementsTable");
+        Tab emails = new Tab("Announcements");
         Div emailsPage = new Div();
         emailsFunc(emailsPage);
         
-        Tab assignments = new Tab("Pending AssignmentsTable");
+        Tab assignments = new Tab("Pending Assignments");
         Div assPage = new Div();
         assFunc(assPage);
         
-        Tab tests = new Tab("Upcoming TestsTable");
+        Tab tests = new Tab("Upcoming Tests");
         Div testsPage = new Div();
         testsFunc(testsPage);
         
-        Tab gradebook = new Tab("GradebookTable");
+        Tab gradebook = new Tab("Gradebook");
         Div gradebookPage = new Div();
         gradebookFunc(gradebookPage);
         
@@ -81,19 +87,43 @@ public class DashboardView extends HorizontalLayout {
     }
 
     private void emailsFunc(Div Page){
-        Page.setText("Emails");
+        List<Announcement> announcements;
+        AnnouncementsTable announcementsTable = new AnnouncementsTable();
+        announcements = announcementsTable.announcementsList();
+        Grid<Announcement> grid = new Grid<>(Announcement.class);
+        grid.setItems(announcements);
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        Page.add(grid);
     }
     
     private void assFunc(Div Page){
-        Page.setText("AssignmentsTable");
+        List<Assignment> assignments;
+        AssignmentsTable assignmentsTable = new AssignmentsTable();
+        assignments = assignmentsTable.AssignmentsList();
+        Grid<Assignment> grid = new Grid<>(Assignment.class);
+        grid.setItems(assignments);
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        Page.add(grid);
     }
 
     private void testsFunc(Div Page){
-        Page.setText("TestsTable");
+        List<Test> tests;
+        TestsTable testsTable = new TestsTable();
+        tests = testsTable.testList();
+        Grid<Test> grid = new Grid<>(Test.class);
+        grid.setItems(tests);
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        Page.add(grid);
     }
 
     private void gradebookFunc(Div Page){
-        Page.setText("GradebookTable");
+        List<Gradebook> grades;
+        GradebookTable testsTable = new GradebookTable();
+        grades = testsTable.gradesList();
+        Grid<Gradebook> grid = new Grid<>(Gradebook.class);
+        grid.setItems(grades);
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        Page.add(grid);
     }
 
 }

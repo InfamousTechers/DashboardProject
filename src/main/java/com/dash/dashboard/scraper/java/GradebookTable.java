@@ -1,7 +1,6 @@
 package com.dash.dashboard.scraper.java;
 
-import com.dash.dashboard.scraper.java.ToolsTables;
-import com.dash.dashboard.views.dashboard.Announcement;
+import com.dash.dashboard.views.dashboard.Gradebook;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,34 +13,33 @@ import java.util.List;
  * @author brandonpahla
  * @email brandon.m.paahla@gmail.com
  */
-public class AnnouncementsTable extends ToolsTables {
+public class GradebookTable extends ToolsTables {
     private Connection connection;
 
-    public AnnouncementsTable(){
+    public GradebookTable(){
         connection = super.connect();
     }
-    
-    public List<Announcement> announcementsList(){
+
+    public List<Gradebook> gradesList(){
         ResultSet rs = this.selectAll();
-        List<Announcement> announcements = new ArrayList<>(0);
+        List<Gradebook> grades = new ArrayList<>(0);
         // loop through the result set
         try {
             while (rs.next()) {
-                announcements.add(new Announcement( rs.getString("Preview"),
-                        rs.getString("Author"),
-                        rs.getString("Date"),
-                        rs.getString("link")));
+                grades.add(new Gradebook(rs.getString("Course"),
+                        rs.getString("Title"),
+                        rs.getString("Mark"),
+                        rs.getString("Total")));
             }
-            return announcements;
+            return grades;
         }catch (SQLException e){
             System.out.println(e.getMessage());
             return null;
-        }
-    }
+        }}
 
     @Override
     public ResultSet selectAll() {
-        String sql = "SELECT Preview, Author, Date, link  FROM Announcements";
+        String sql = "SELECT Course, Title, Mark, Total  FROM Gradebook";
         ResultSet rs;
         try{
             Statement stmt  = this.connection.createStatement();
@@ -56,18 +54,16 @@ public class AnnouncementsTable extends ToolsTables {
     @Override
     public void printAll() {
         ResultSet rs = this.selectAll();
-
         // loop through the result set
         try {
             while (rs.next()) {
-                System.out.println(rs.getString("Preview") + "\t" +
-                        rs.getString("Author") + "\t" +
-                        rs.getString("Date") + "\t" +
-                        rs.getString("link"));
+                System.out.println(rs.getString("Course") + "\t" +
+                        rs.getString("Title") + "\t" +
+                        rs.getString("Mark") + "\t" +
+                        rs.getString("Total"));
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
     }
-
 }
