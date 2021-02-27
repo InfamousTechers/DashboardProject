@@ -11,13 +11,13 @@ public class Main {
         gradebookTable.printAll();
 
         AnnouncementsTable announcementsTable = new AnnouncementsTable();
-//        announcementsTable.printAll();
+        announcementsTable.printAll();
 
         AssignmentsTable assignmentsTable = new AssignmentsTable();
-//        assignmentsTable.printAll();
+        assignmentsTable.printAll();
 
         TestsTable testsTable = new TestsTable();
-//        testsTable.printAll();
+        testsTable.printAll();
     }
 
 }

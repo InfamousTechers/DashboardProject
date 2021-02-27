@@ -14,12 +14,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 //import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 //import com.vaadin.flow.component.textfield.TextField;
+
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.dash.dashboard.views.main.MainView;
@@ -92,7 +93,7 @@ public class DashboardView extends HorizontalLayout {
         announcements = announcementsTable.announcementsList();
         Grid<Announcement> grid = new Grid<>(Announcement.class);
         grid.setItems(announcements);
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+//        grid.getColumns().forEach(col -> col.setAutoWidth(true));
         Page.add(grid);
     }
     

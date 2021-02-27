@@ -21,21 +21,17 @@ public class TestsTable extends ToolsTables {
     }
 
     public List<Test> testList(){
-        ResultSet rs = this.selectAll();
         List<Test> tests = new ArrayList<>(0);
         try {
+            ResultSet rs = this.selectAll();
             while (rs.next()) {
                 tests.add(new Test( rs.getString("Title"),
                         rs.getString("TimeLimit"),
                         rs.getString("DueDate")));
             }
-            return tests;
         }catch (SQLException e){
-            System.out.println(e.getMessage());
-            return null;
         }
-
-
+        return tests;
     }
 
     @Override

@@ -32,22 +32,18 @@ public class AssignmentsTable extends ToolsTables {
         return null;
     }
     public List<Assignment> AssignmentsList(){
-        ResultSet rs = this.selectAll();
         List<Assignment>  assignments = new ArrayList<>(0);
-
-        // loop through the result set
         try {
+            ResultSet rs = this.selectAll();
+            // loop through the result set
             while (rs.next()) {
                 assignments.add( new Assignment( rs.getString("Course"),
                         rs.getString("Title"),
                         rs.getString("DueDate")));
             }
-            return assignments;
         }catch (SQLException e){
-            System.out.println(e.getMessage());
-            return null;
         }
-
+        return assignments;
     }
 
     @Override

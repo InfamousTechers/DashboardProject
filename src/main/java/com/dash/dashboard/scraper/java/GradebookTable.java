@@ -20,22 +20,21 @@ public class GradebookTable extends ToolsTables {
         connection = super.connect();
     }
 
-    public List<Gradebook> gradesList(){
-        ResultSet rs = this.selectAll();
+    public List<Gradebook> gradesList() {
         List<Gradebook> grades = new ArrayList<>(0);
-        // loop through the result set
         try {
+            ResultSet rs = this.selectAll();
+            // loop through the result set
             while (rs.next()) {
                 grades.add(new Gradebook(rs.getString("Course"),
                         rs.getString("Title"),
                         rs.getString("Mark"),
                         rs.getString("Total")));
             }
-            return grades;
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-            return null;
-        }}
+        } catch (SQLException e) {
+        }
+        return grades;
+    }
 
     @Override
     public ResultSet selectAll() {

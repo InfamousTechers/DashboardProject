@@ -22,22 +22,21 @@ public class AnnouncementsTable extends ToolsTables {
     }
     
     public List<Announcement> announcementsList(){
-        ResultSet rs = this.selectAll();
         List<Announcement> announcements = new ArrayList<>(0);
-        // loop through the result set
         try {
+            ResultSet rs = this.selectAll();
+            // loop through the result set
             while (rs.next()) {
-                announcements.add(new Announcement( rs.getString("Preview"),
+                announcements.add(new Announcement(rs.getString("Preview"),
                         rs.getString("Author"),
                         rs.getString("Date"),
                         rs.getString("link")));
             }
-            return announcements;
         }catch (SQLException e){
-            System.out.println(e.getMessage());
-            return null;
         }
+        return announcements;
     }
+
 
     @Override
     public ResultSet selectAll() {
