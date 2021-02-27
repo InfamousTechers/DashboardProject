@@ -25,7 +25,7 @@ class Database:
 
         self.connection.commit()
 
-    def announcements_insert(self, preview, author, date, message,link):
+    def announcements_insert(self, preview, author, date,link):
         try:
             sqlite_insert_with_param = """INSERT INTO Announcements
                             (Preview, Author, Date,Link) 

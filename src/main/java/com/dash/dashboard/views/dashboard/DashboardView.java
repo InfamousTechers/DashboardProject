@@ -1,5 +1,9 @@
 package com.dash.dashboard.views.dashboard;
 
+import com.dash.dashboard.scraper.java.AnnouncementsTable;
+import com.dash.dashboard.scraper.java.AssignmentsTable;
+import com.dash.dashboard.scraper.java.GradebookTable;
+import com.dash.dashboard.scraper.java.TestsTable;
 import com.vaadin.flow.component.Component;
 //import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -82,8 +86,10 @@ public class DashboardView extends HorizontalLayout {
     private void emailsFunc(Div Page){
         List<Announcement> announcements;
         AnnouncementsTable announcementsTable = new AnnouncementsTable();
+
         announcements = announcementsTable.announcementsList();
         Grid<Announcement> grid = new Grid<>(Announcement.class);
+
         grid.setItems(announcements);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -94,7 +100,7 @@ public class DashboardView extends HorizontalLayout {
 
     private void popUpMessage(Announcement value) {
         Notification notification = new Notification(
-                value.getPreview(), 9000);
+                "Function Coming Soon:" + value.getPreview(), 10000);
         notification.open();
     }
 
@@ -105,9 +111,18 @@ public class DashboardView extends HorizontalLayout {
 
         assignments = assignmentsTable.AssignmentsList();
         Grid<Assignment> grid = new Grid<>(Assignment.class);
+
         grid.setItems(assignments);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(event -> popUpAssMessage(event.getValue()));
+
         Page.add(grid);
+    }
+
+    private void popUpAssMessage(Assignment value) {
+        Notification notification = new Notification(value.getDueDate(), 10000);
+        notification.open();
     }
 
     private void testsFunc(Div Page){
@@ -123,11 +138,52 @@ public class DashboardView extends HorizontalLayout {
     private void gradebookFunc(Div Page){
         List<Gradebook> grades;
         GradebookTable testsTable = new GradebookTable();
+
         grades = testsTable.gradesList();
         Grid<Gradebook> grid = new Grid<>(Gradebook.class);
+
         grid.setItems(grades);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(event -> showPercentage(event.getValue()));
+
+
         Page.add(grid);
+    }
+
+    private void showPercentage(Gradebook value) {
+        String mark = value.getMark();
+        String total = value.getTotal();
+        float percentage = 0;
+        if (!(mark.equalsIgnoreCase("-"))){
+            float markFloat = Float.parseFloat(mark);
+            float totalFloat = Float.parseFloat(total);
+            percentage = 100*(markFloat/totalFloat);
+        }
+
+        if (percentage < 50){
+            mark = percentage + " %" + "   Fail";
+            Notification notification = new Notification(mark, 10000);
+            notification.open();
+        }
+        else if (percentage > 49 && percentage < 60){
+            mark = percentage + " %" + "    Third Class [C]";
+            Notification notification = new Notification(mark, 10000);
+            notification.open();
+        }else if (percentage > 59 && percentage < 70){
+            mark = percentage + " %" + "    Second Class (Division 2) [B]";
+            Notification notification = new Notification(mark, 10000);
+            notification.open();
+        }else if (percentage > 69 && percentage < 75){
+            mark = percentage + " %" + "    Second Class (Division 1) [B+]";
+            Notification notification = new Notification(mark, 10000);
+            notification.open();
+        }else if (percentage > 74 && percentage < 100.5){
+            mark = percentage + " %" + "    First Class [A]";
+            Notification notification = new Notification(mark, 10000);
+            notification.open();
+        }
+
     }
 
 }

@@ -15,6 +15,4 @@ public interface Tables {
 
     ResultSet selectAll();
 
-
-
 }

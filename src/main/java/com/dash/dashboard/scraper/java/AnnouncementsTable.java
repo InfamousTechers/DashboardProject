@@ -28,10 +28,12 @@ public class AnnouncementsTable extends ToolsTables {
             // loop through the result set
             if (rs != null){
                 while (rs.next()) {
-                    announcements.add(new Announcement(rs.getString("Preview"),
+                    String preview = rs.getString("Preview");
+                    preview = preview.substring(preview.indexOf("t")+2);
+                    announcements.add(new Announcement(preview,
                             rs.getString("Author"),
                             rs.getString("Date"),
-                            rs.getString("link")));
+                            rs.getString("Link")));
                 }
             }
         }catch (SQLException e){
@@ -57,7 +59,6 @@ public class AnnouncementsTable extends ToolsTables {
     @Override
     public void printAll() {
         ResultSet rs = this.selectAll();
-
         // loop through the result set
         try {
             while (rs.next()) {

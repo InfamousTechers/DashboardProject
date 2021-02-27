@@ -10,7 +10,7 @@ import java.util.List;
  * @author brandonpahla
  * @email brandon.m.paahla@gmail.com
  */
-public class AssignmentsTable extends ToolsTables {
+public class AssignmentsTable extends ToolsTables{
     private Connection connection;
 
     public AssignmentsTable(){
