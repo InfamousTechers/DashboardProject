@@ -25,11 +25,13 @@ public class GradebookTable extends ToolsTables {
         try {
             ResultSet rs = this.selectAll();
             // loop through the result set
-            while (rs.next()) {
-                grades.add(new Gradebook(rs.getString("Course"),
-                        rs.getString("Title"),
-                        rs.getString("Mark"),
-                        rs.getString("Total")));
+            if (rs != null) {
+                while (rs.next()) {
+                    grades.add(new Gradebook(rs.getString("Course"),
+                            rs.getString("Title"),
+                            rs.getString("Mark"),
+                            rs.getString("Total")));
+                }
             }
         } catch (SQLException e) {
         }

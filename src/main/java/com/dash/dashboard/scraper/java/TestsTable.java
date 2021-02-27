@@ -24,10 +24,12 @@ public class TestsTable extends ToolsTables {
         List<Test> tests = new ArrayList<>(0);
         try {
             ResultSet rs = this.selectAll();
-            while (rs.next()) {
-                tests.add(new Test( rs.getString("Title"),
-                        rs.getString("TimeLimit"),
-                        rs.getString("DueDate")));
+            if (rs != null) {
+                while (rs.next()) {
+                    tests.add(new Test(rs.getString("Title"),
+                            rs.getString("TimeLimit"),
+                            rs.getString("DueDate")));
+                }
             }
         }catch (SQLException e){
         }

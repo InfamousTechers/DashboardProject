@@ -36,10 +36,12 @@ public class AssignmentsTable extends ToolsTables {
         try {
             ResultSet rs = this.selectAll();
             // loop through the result set
-            while (rs.next()) {
-                assignments.add( new Assignment( rs.getString("Course"),
-                        rs.getString("Title"),
-                        rs.getString("DueDate")));
+            if (rs != null){
+                while (rs.next()) {
+                    assignments.add( new Assignment( rs.getString("Course"),
+                            rs.getString("Title"),
+                            rs.getString("DueDate")));
+                }
             }
         }catch (SQLException e){
         }

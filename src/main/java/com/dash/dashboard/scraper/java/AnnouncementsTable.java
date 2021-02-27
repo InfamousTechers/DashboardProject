@@ -26,11 +26,13 @@ public class AnnouncementsTable extends ToolsTables {
         try {
             ResultSet rs = this.selectAll();
             // loop through the result set
-            while (rs.next()) {
-                announcements.add(new Announcement(rs.getString("Preview"),
-                        rs.getString("Author"),
-                        rs.getString("Date"),
-                        rs.getString("link")));
+            if (rs != null){
+                while (rs.next()) {
+                    announcements.add(new Announcement(rs.getString("Preview"),
+                            rs.getString("Author"),
+                            rs.getString("Date"),
+                            rs.getString("link")));
+                }
             }
         }catch (SQLException e){
         }
