@@ -1,24 +1,22 @@
 package com.dash.dashboard.views.dashboard;
 
-import java.security.SecureRandom;
-
 /**
  * @author brandonpahla
  * @email brandon.m.paahla@gmail.com
  */
 public class Assignment{
-    private String Course;
+    private String Site;
     private String Title;
     private String DueDate;
 
-    public Assignment(String Course, String Title, String DueDate){
-        this.Course = Course;
+    public Assignment(String Site, String Title, String DueDate){
+        this.Site = Site;
         this.Title  = Title;
         this.DueDate = DueDate;
     }
 
-    public String getCourse(){
-        return Course;
+    public String getSite(){
+        return Site;
     }
 
     public String getTitle(){
@@ -29,3 +27,4 @@ public class Assignment{
         return DueDate;
     }
 }
+

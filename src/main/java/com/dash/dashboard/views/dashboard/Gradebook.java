@@ -1,9 +1,5 @@
 package com.dash.dashboard.views.dashboard;
 
-import com.dash.dashboard.scraper.java.GradebookTable;
-
-import java.util.concurrent.ThreadPoolExecutor;
-
 /**
  * @author brandonpahla
  * @email brandon.m.paahla@gmail.com

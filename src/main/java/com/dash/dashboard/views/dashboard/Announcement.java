@@ -12,14 +12,12 @@ public class Announcement {
     private String Author;
     private String Date;
     private String link;
-    private Link announcementLink;
 
-    public Announcement(String Preview, String Author, String Date, String link){
+    public Announcement(String Preview, String Author, String Date,String link){
         this.Preview = Preview;
         this.Author = Author;
         this.Date = Date;
         this.link = link;
-        announcementLink = new Link(link, new ExternalResource(link));
     }
 
     public String getPreview(){
@@ -34,7 +32,11 @@ public class Announcement {
         return Date;
     }
 
-//    public String linkUrl(){
+
+//    public Link getClickMe(){
+//        Link link = new Link("Click Me!",
+//                new ExternalResource("http://vaadin.com/"));
+//        link.isConnectorEnabled();
 //        return link;
 //    }
 

@@ -1,15 +1,12 @@
 package com.dash.dashboard.views.dashboard;
 
-import com.dash.dashboard.scraper.java.AnnouncementsTable;
-import com.dash.dashboard.scraper.java.AssignmentsTable;
-import com.dash.dashboard.scraper.java.GradebookTable;
-import com.dash.dashboard.scraper.java.TestsTable;
 import com.vaadin.flow.component.Component;
 //import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 //import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -25,11 +22,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.dash.dashboard.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
-import net.bytebuddy.implementation.bind.annotation.AllArguments;
-import org.springframework.web.servlet.View;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Route(value = "Dashboard", layout = MainView.class)
 @PageTitle("Dashboard")
@@ -93,13 +85,24 @@ public class DashboardView extends HorizontalLayout {
         announcements = announcementsTable.announcementsList();
         Grid<Announcement> grid = new Grid<>(Announcement.class);
         grid.setItems(announcements);
-//        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(evt -> popUpMessage(evt.getValue()));
+
         Page.add(grid);
     }
-    
+
+    private void popUpMessage(Announcement value) {
+        Notification notification = new Notification(
+                value.getPreview(), 9000);
+        notification.open();
+    }
+
     private void assFunc(Div Page){
+
         List<Assignment> assignments;
         AssignmentsTable assignmentsTable = new AssignmentsTable();
+
         assignments = assignmentsTable.AssignmentsList();
         Grid<Assignment> grid = new Grid<>(Assignment.class);
         grid.setItems(assignments);

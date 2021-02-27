@@ -6,7 +6,7 @@ class Database:
         self.cursor = self.connection.cursor()
         #Create Announcements table if not exists
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Announcements
-        (id integer PRIMARY KEY, Preview text UNIQUE NOT NULL, Author text NOT NULL, Date text NOT NULL, Link text NOT NULL)''')
+        (id integer PRIMARY KEY, Preview text UNIQUE NOT NULL, Author text NOT NULL, Date text NOT NULL,Link text NOT NULL)''')
         #Create Tests table if not exists
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Tests
         (id integer PRIMARY KEY, Title text UNIQUE NOT NULL, Timelimit text NOT NULL, Duedate text NOT NULL)''')
@@ -25,13 +25,13 @@ class Database:
 
         self.connection.commit()
 
-    def announcements_insert(self, preview, author, date, link):
+    def announcements_insert(self, preview, author, date, message,link):
         try:
             sqlite_insert_with_param = """INSERT INTO Announcements
-                            (Preview, Author, Date, Link) 
+                            (Preview, Author, Date,Link) 
                             VALUES (?, ?, ?, ?);"""
 
-            data_tuple = (preview, author, date, link)
+            data_tuple = (preview, author, date,link)
             self.cursor.execute(sqlite_insert_with_param, data_tuple)
             self.connection.commit()
         except sqlite3.Error as error:
