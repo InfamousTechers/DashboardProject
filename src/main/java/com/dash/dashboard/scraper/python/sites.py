@@ -5,8 +5,8 @@ from databases import Database
 
 class Site:
     def __init__(self, soup_n_session):
-        # self.year = date.today().year
-        self.year = 2020
+        self.year = date.today().year
+        # self.year = 2020
         self.soup, self.session = soup_n_session
         self.database = Database()
 
@@ -112,7 +112,7 @@ class Site:
         titles = self.soup.findAll("span", {"class" : "fullTitle"})
         for title in titles:
             site_name = title.string
-            if str(self.year) in site_name:
+            if True :#str(self.year) in site_name or "2020" not in site_name:
                 try:
                     # if site is a current year site get site link
                     attributes = {"title": site_name}
