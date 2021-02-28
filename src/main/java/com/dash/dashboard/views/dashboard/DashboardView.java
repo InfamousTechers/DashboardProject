@@ -61,13 +61,18 @@ public class DashboardView extends HorizontalLayout {
         Tab gradebook = new Tab("Gradebook");
         Div gradebookPage = new Div();
         gradebookFunc(gradebookPage);
+
+        Tab resultsAnalysis = new Tab("Analysis");
+        Div resultspage = new Div();
+        resultsAnalysisFunc(resultspage);
         
         Map<Tab, Component> tabsToPages = new HashMap<>();
         tabsToPages.put(emails, emailsPage);
         tabsToPages.put(assignments, assPage);
         tabsToPages.put(tests, testsPage);
         tabsToPages.put(gradebook, gradebookPage);
-        tabs = new Tabs(emails, assignments, tests, gradebook);
+        tabsToPages.put(resultsAnalysis, resultspage);
+        tabs = new Tabs(emails, assignments, tests, gradebook, resultsAnalysis);
         tabs.setFlexGrowForEnclosedTabs(1);
         Div pages = new Div(emailsPage, assPage, testsPage, gradebookPage);
 
@@ -81,6 +86,10 @@ public class DashboardView extends HorizontalLayout {
         tabs.setSelectedTab(emails);
 
         add(tabs, pages);
+    }
+
+    private void resultsAnalysisFunc(Div resultsPage) {
+        resultsPage.add("Analyse results from the 'GradeBook'");
     }
 
     private void emailsFunc(Div Page){
@@ -99,8 +108,7 @@ public class DashboardView extends HorizontalLayout {
     }
 
     private void popUpMessage(Announcement value) {
-        Notification notification = new Notification(
-                "Function Coming Soon:" + value.getPreview(), 10000);
+        Notification notification = new Notification(value.getPreview(), 10000);
         notification.open();
     }
 
