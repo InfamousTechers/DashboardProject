@@ -8,8 +8,9 @@ import com.vaadin.flow.component.Component;
 //import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-//import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -88,13 +89,17 @@ public class DashboardView extends HorizontalLayout {
         AnnouncementsTable announcementsTable = new AnnouncementsTable();
 
         announcements = announcementsTable.announcementsList();
-        Grid<Announcement> grid = new Grid<>(Announcement.class);
+        Grid<Announcement> grid = new Grid<>();
 
         grid.setItems(announcements);
+        grid.addColumn(Announcement::getDate).setHeader("Date");
+        grid.addColumn(Announcement::getPreview).setHeader("Announcement");
+        grid.addColumn(Announcement::getAuthor).setHeader("Author");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(evt -> popUpMessage(evt.getValue()));
-
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        Page.add(new H3("Announcement"));
         Page.add(grid);
     }
 
@@ -110,13 +115,17 @@ public class DashboardView extends HorizontalLayout {
         AssignmentsTable assignmentsTable = new AssignmentsTable();
 
         assignments = assignmentsTable.AssignmentsList();
-        Grid<Assignment> grid = new Grid<>(Assignment.class);
+        Grid<Assignment> grid = new Grid<>();
 
         grid.setItems(assignments);
+        grid.addColumn(Assignment::getTitle).setHeader("Assignment");
+        grid.addColumn(Assignment::getDueDate).setHeader("Due Date");
+        grid.addColumn(Assignment::getSite).setHeader("Site");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> popUpAssMessage(event.getValue()));
-
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        Page.add(new H3("Assignments"));
         Page.add(grid);
     }
 
@@ -129,9 +138,14 @@ public class DashboardView extends HorizontalLayout {
         List<Test> tests;
         TestsTable testsTable = new TestsTable();
         tests = testsTable.testList();
-        Grid<Test> grid = new Grid<>(Test.class);
+        Grid<Test> grid = new Grid<>();
         grid.setItems(tests);
+        grid.addColumn(Test::getTitle).setHeader("Test");
+        grid.addColumn(Test::getTimeLimit).setHeader("Time Limit");
+        grid.addColumn(Test::getDueDate).setHeader("Due Date");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        Page.add(new H3("Tests"));
         Page.add(grid);
     }
 
@@ -140,14 +154,18 @@ public class DashboardView extends HorizontalLayout {
         GradebookTable testsTable = new GradebookTable();
 
         grades = testsTable.gradesList();
-        Grid<Gradebook> grid = new Grid<>(Gradebook.class);
+        Grid<Gradebook> grid = new Grid<>();
 
         grid.setItems(grades);
+        grid.addColumn(Gradebook::getCourse).setHeader("Course");
+        grid.addColumn(Gradebook::getTitle).setHeader("Title");
+        grid.addColumn(Gradebook::getMark).setHeader("Mark");
+        grid.addColumn(Gradebook::getTotal).setHeader("Total");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> showPercentage(event.getValue()));
-
-
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        Page.add(new H3("Gradebook"));
         Page.add(grid);
     }
 

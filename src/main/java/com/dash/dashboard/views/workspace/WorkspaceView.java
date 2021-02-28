@@ -1,7 +1,21 @@
 package com.dash.dashboard.views.workspace;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.dash.dashboard.views.main.MainView;
+import com.dash.dashboard.workspaceClasses.State;
+import com.dash.dashboard.workspaceClasses.Task;
+import com.flowingcode.vaadin.addons.simpletimer.SimpleTimer;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
+//import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.details.DetailsVariant;
@@ -14,30 +28,19 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.dash.dashboard.views.main.MainView;
-import com.dash.dashboard.workspaceClasses.State;
-import com.dash.dashboard.workspaceClasses.Task;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Text;
-//import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "Workspace", layout = MainView.class)
 @PageTitle("Workspace")
@@ -290,7 +293,77 @@ public class WorkspaceView extends VerticalLayout {
     }
 
     private void timerFunc(Div Page){
-        Page.setText("Timer");
+        VerticalLayout home = new VerticalLayout();
+        home.add(new H3("Timer"));
+        home.add(new Button("Simple Timer", click -> {
+            VerticalLayout simpleTimer = new VerticalLayout();
+            SimpleTimer timer = new SimpleTimer();
+            timer.setWidth("100px");
+            timer.setHeight("50px");
+            timer.getStyle().set("font-size", "40px");
+        
+            Span timerTitle = new Span("Simple Count Up Timer");
+        
+            TextField startTime = new TextField("Start Time", e -> timer.setStartTime(new BigDecimal(e.getValue())));
+            Checkbox countUp = new Checkbox("Count Up", false);
+                countUp.addValueChangeListener(e -> {
+                    timer.setCountUp(countUp.getValue());
+                    if (e.getValue()) {
+                        startTime.setLabel("End Time");
+                        timerTitle.setText("Simple Count Up Timer");
+                    } else {
+                        startTime.setLabel("Start Time");
+                        timerTitle.setText("Simple Countdown Timer");
+                    }
+                });
+            Button start = new Button("Start/Stop", e -> timer.start());
+            Button stop = new Button("Stop", e -> timer.pause());
+            Button reset = new Button("Reset", e -> {
+                timer.reset();
+            });
+            Button running = new Button("Current Time", e -> timer.getCurrentTimeAsync().thenAccept(
+                time -> Notification.show(time.toPlainString() + (timer.isRunning() ? "" : " (Not Running)"))
+            ));
+            Checkbox fractions = new Checkbox("Fractions", true);
+            fractions.addValueChangeListener(e -> timer.setFractions(e.getValue()));
+            Checkbox minutes = new Checkbox("Minutes", e -> timer.setMinutes(e.getValue()));
+            Checkbox hours = new Checkbox("Hours", e -> timer.setHours(e.getValue()));
+            Checkbox visible = new Checkbox("Visible", e->{
+                if (e.isFromClient()) timer.setVisible(!timer.isVisible());     
+            });
+            visible.setValue(true);
+
+            timer.addTimerEndEvent(e -> Notification.show("Timer Ended"));
+
+            HorizontalLayout topLayout = new HorizontalLayout(timerTitle, timer);
+            topLayout.setAlignItems(Alignment.CENTER);
+
+            HorizontalLayout options = new HorizontalLayout(countUp, fractions, minutes, hours, visible);
+            options.setAlignItems(Alignment.CENTER);
+        
+            HorizontalLayout bottomLayout = new HorizontalLayout(start, stop, reset, running);
+            bottomLayout.setAlignItems(Alignment.BASELINE);
+        
+            simpleTimer.add(new VerticalLayout(topLayout, startTime, options, bottomLayout));
+            simpleTimer.add(new Button("Home", evt -> {
+                Page.remove(simpleTimer);
+                Page.add(home);
+            }));
+            Page.remove(home);
+            Page.add(simpleTimer);
+        }));
+        
+        home.add(new Button("Pomodoro Timer", click -> {
+            VerticalLayout pomoTimer = new VerticalLayout();
+            pomoTimer.add(new Button("Home", evt -> {
+                Page.remove(pomoTimer);
+                Page.add(home);
+            }));
+            Page.remove(home);
+            Page.add(pomoTimer);
+        }));
+        
+        Page.add(home);
     }
 
     private void calFunc(Div Page){
