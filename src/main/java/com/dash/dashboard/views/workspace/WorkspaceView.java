@@ -355,12 +355,22 @@ public class WorkspaceView extends VerticalLayout {
         
         home.add(new Button("Pomodoro Timer", click -> {
             VerticalLayout pomoTimer = new VerticalLayout();
-            pomoTimer.add(new Button("Home", evt -> {
-                Page.remove(pomoTimer);
-                Page.add(home);
+            VerticalLayout dialog = new VerticalLayout();
+            Dialog pomoDialog = new Dialog();
+            dialog.add(new H3("Pomodoro Technique:"));
+            dialog.add(new Text("The Pomodoro Technique is created by Francesco Cirillo for a more productive way to work and study. The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen timer that Cirillo used as a university student."));
+            dialog.add(new Button("Next", evt -> {
+                pomoDialog.close();
+                pomoTabs(pomoTimer);
+                pomoTimer.add(new Button("Home", e -> {
+                    Page.remove(pomoTimer);
+                    Page.add(home);
+                }));
+                Page.remove(home);
+                Page.add(pomoTimer);
             }));
-            Page.remove(home);
-            Page.add(pomoTimer);
+            pomoDialog.add(dialog);
+            pomoDialog.open();
         }));
         
         Page.add(home);
@@ -500,4 +510,84 @@ public class WorkspaceView extends VerticalLayout {
         display.setLabel(display.getLabel() + display.getValue() + opr);
         display.setValue("0");
     }
+
+
+    // POMODORO
+    private void pomoTabs(VerticalLayout Page){
+        Tab pomo = new Tab("Pomodoro");
+        Div pomoPage = new Div();
+        pomoFunc(pomoPage);
+
+        Tab shortB = new Tab("Short Break");
+        Div shortBPage = new Div();
+        sBFunc(shortBPage);
+
+        Tab longB = new Tab("Long Break");
+        Div longBPage = new Div();
+        lBFunc(longBPage);
+
+        Map<Tab, Component> tabsToPages = new HashMap<>();
+        tabsToPages.put(pomo, pomoPage);
+        tabsToPages.put(shortB, shortBPage);
+        tabsToPages.put(longB, longBPage);
+        tabs = new Tabs(pomo, shortB, longB);
+        tabs.setFlexGrowForEnclosedTabs(1);
+        Div pages = new Div(pomoPage, shortBPage, longBPage);
+
+        tabs.addSelectedChangeListener(event -> {
+            tabsToPages.values().forEach(page -> page.setVisible(false));
+            Component selectedPage = tabsToPages.get(tabs.getSelectedTab());
+            selectedPage.setVisible(true);
+        });
+
+        tabs.setSelectedTab(shortB);
+        tabs.setSelectedTab(pomo);
+
+        Page.add(tabs, pages);
+    }
+
+    private void pomoFunc(Div Page){
+        Page.add(time(1500));
+    }
+    
+    private void sBFunc(Div Page){
+        Page.add(time(300));
+    }
+    private void lBFunc(Div Page){
+        Page.add(time(900));
+    }
+    
+    private VerticalLayout time(int sec){
+        SimpleTimer timer = new SimpleTimer();
+        timer.getStyle().set("font-size", "80px");
+        timer.setFractions(true);
+        timer.setMinutes(true);
+        timer.setStartTime(new BigDecimal(sec));
+        timer.start();
+        timer.pause();
+        timer.addTimerEndEvent(e -> {
+            String message = "";
+            switch (sec){
+                case 1500:
+                    message = "Nice sesion, REST";
+                    break;
+                case 900:
+                    message = "Time to GO again!";
+                    break;
+                case 300:
+                    message = "Break over...";
+                    break;
+            }
+            Notification.show(message);
+            timer.reset();
+            timer.start();
+            timer.pause();
+        });
+        Button start = new Button("Start", e -> timer.start());
+        VerticalLayout timee = new VerticalLayout();
+        timee.add(timer, start);
+        timee.setAlignItems(Alignment.CENTER);
+        return timee;
+    }
+
 }
