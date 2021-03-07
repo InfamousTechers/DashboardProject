@@ -1,11 +1,13 @@
 
-from datetime import date
+from datetime import date, datetime, timedelta
 from bs4 import BeautifulSoup
 from databases import Database
 
 class Site:
     def __init__(self, soup_n_session):
         self.year = date.today().year
+        self.month = date.today().month
+        self.day = date.today().day
         # self.year = 2020
         self.soup, self.session = soup_n_session
         self.database = Database()
@@ -25,11 +27,11 @@ class Site:
                 rows = table.findAll("tr")[1:]
                 for row in rows:
                     date = row.find("td", {"headers":"date"}).string.strip()
-                    subject = row.find("a")["title"]
-                    author = row.find("td", {"headers":"author"}).string.strip()
-                    link = row.find("a")["href"]
-                    self.database.announcements_insert(subject,author,date,link)
-                    
+                    if self.isRecent(date, 30):
+                        subject = row.find("a")["title"]
+                        author = row.find("td", {"headers":"author"}).string.strip()
+                        link = row.find("a")["href"]
+                        self.database.announcements_insert(subject,author,date,link)
             except:
                 pass
   
@@ -41,9 +43,12 @@ class Site:
                 for row in rows:
                     title = row.find("a")["title"]
                     duedate = row.find("span", {"class":"highlight"}).string
-                    link = row.find("a")["href"]
-                    self.database.smart_assignments_insert(course_name, title, duedate, link)
-                    self.database.assignments_insert(course_name, title, duedate)
+                    if self.isFutureDay(duedate):
+                        link = row.find("a")["href"]
+                        self.database.smart_assignments_insert(course_name, title, duedate, link)
+                        self.database.assignments_insert(course_name, title, duedate)
+                    else:
+                        continue
             except:
                 pass
 
@@ -52,12 +57,14 @@ class Site:
             try:
                 table = gradebook_soup.find("table", {"id":"gradeSummaryTable"})
                 rows = table.findAll("tr")[1:]
-                #TODO: test the following
                 for row in rows:
                     title = row.find("span", {"class":"gb-summary-grade-title"}).string
                     score = row.find("span", {"class":"gb-summary-grade-score-raw"}).string
-                    out_of = row.find("span", {"class":"gb-summary-grade-score-outof"}).string[1:]
-                    self.database.gradebook_insert(course_name, title, score, out_of)
+                    if score.strip() != "-":   
+                        out_of = row.find("span", {"class":"gb-summary-grade-score-outof"}).string[1:]
+                        self.database.gradebook_insert(course_name, title, score, out_of)
+                    else:
+                        continue
             except:
                 pass
 
@@ -102,9 +109,87 @@ class Site:
         except:
             return None, None
 
-    def filter(self, by, site_name):
-        if by.lower() == "y":
-            return str(self.year) in site_name
+
+    def month_number(self, month):
+        month_to_number = {
+            'January' : 1,         
+            'February' : 2,         
+            'March' : 3,           
+            'April' : 4,              
+            'May' : 5, 
+            'June' : 6,
+            'July' : 7, 
+            'August' : 8, 
+            'September' : 9, 
+            'October' : 10, 
+            'November' : 11, 
+            'December' : 12
+            }
+        return [v for k, v in month_to_number.items() if month.lower() in k.lower()][0]
+
+    def isFutureDay(self, duedate):
+        current_year = date.today().year
+        current_month = date.today().month
+        current_day = date.today().day
+
+        datedue = duedate.strip()
+
+        datedue = datedue.split(" ")
+
+        due_date = []
+
+        for i in datedue:
+            if datedue.index(i) == 0 or datedue.index(i) == 2:
+                i = int(i)
+            due_date.append(i)
+
+        if current_year > due_date[2]:
+            return False
+        elif current_year < due_date[2]:
+            return True
+        elif current_month > month_number(due_date[1]) and current_year == due_date[2]:
+            return False
+        elif current_month < month_number(due_date[1]) and current_year == due_date[2]:
+            return True
+        elif current_month == month_number(due_date[1]) and current_year == due_date[2]:
+            if current_day > due_date[0]:
+                return False
+            elif current_day <= due_date[0]:
+                return True
+
+    def isRecent(self, announcementDate, N_DAYS_AGO):
+        announcementDate = announcementDate.strip()
+        announcementDate = announcementDate.split("-")
+        announcementDate[0] = int(announcementDate[0])
+        yearAndTime = announcementDate[-1]
+        yearAndTime = yearAndTime.split()
+        announcementDate[-1] = int(yearAndTime[0])
+        announcementDate.append(yearAndTime[1])
+
+        today = datetime.now()    
+        n_days_ago = today - timedelta(days=N_DAYS_AGO)
+
+        n_days_ago_day = n_days_ago.day
+        n_days_ago_month = n_days_ago.month
+        n_days_ago_year = n_days_ago.year
+
+        current_year = date.today().year
+        current_month = date.today().month
+        current_day = date.today().day
+
+        if announcementDate[2] == current_year or announcementDate[2] == n_days_ago_year:
+            return True
+        else:
+            return False
+
+        # if announcementDate[2] < current_year:
+        #     return False
+        # elif (announcementDate[2] == current_year or announcementDate[2] == n_days_ago_year) and (month_number(announcementDate[1]) >= n_days_ago_month or (month_number(announcementDate[1]) == current_month and announcementDate[0] >= n_days_ago_day)):
+        #     return True
+        # elif announcementDate[2] == current_year and month_number(announcementDate[1]) >= n_days_ago_month and announcementDate[0] >= n_days_ago_day:
+        #     return True
+        # elif  announcementDate[2] == current_year and month_number(announcementDate[1]) < n_days_ago_month:
+        #     return False
 
 
     def scrape(self):
@@ -112,45 +197,42 @@ class Site:
         titles = self.soup.findAll("span", {"class" : "fullTitle"})
         for title in titles:
             site_name = title.string
-            if True :#str(self.year) in site_name or "2020" not in site_name:
-                try:
-                    # if site is a current year site get site link
-                    attributes = {"title": site_name}
-                    link = self.soup.findAll("a", attributes)
-                    link = link[0]["href"] 
-                    # got to site
-                    site_soup, site_session = self.go_to_link(link, self.session)
+            try:
+                # if site is a current year site get site link
+                attributes = {"title": site_name}
+                link = self.soup.findAll("a", attributes)
+                link = link[0]["href"] 
+                # got to site
+                site_soup, site_session = self.go_to_link(link, self.session)
 
-                    #DO CONCURRENT PROGRAMMING
+                #DO CONCURRENT PROGRAMMING
 
-                    # go to announcements
-                    announcements_soup, session = self.go_to_announcements(site_soup, site_session)
-                    #     # get announcements
-                    if announcements_soup != None:
-                        self.getAnnouncements(site_name, announcements_soup)
+                # # go to announcements
+                announcements_soup, session = self.go_to_announcements(site_soup, site_session)
+                # #     # get announcements
+                if announcements_soup != None:
+                    self.getAnnouncements(site_name, announcements_soup)
 
-                    # # go  to assignments
-                    assignments_soup, session = self.go_to_assignments(site_soup, site_session)
-                    #     #get assignments
-                    if assignments_soup != None:
-                        self.getAssignments(site_name, assignments_soup)
-                    
-                    # # go  to gradebook
-                    gradebook_soup, session = self.go_to_gradebook(site_soup, site_session)
-                    #     #get gradebook
-                    if gradebook_soup != None:
-                        self.getGradebook(site_name, gradebook_soup)
+                # # # go  to assignments
+                assignments_soup, session = self.go_to_assignments(site_soup, site_session)
+                # #     #get assignments
+                if assignments_soup != None:
+                    self.getAssignments(site_name, assignments_soup)
+                
+                # # # go  to gradebook
+                gradebook_soup, session = self.go_to_gradebook(site_soup, site_session)
+                # #     #get gradebook
+                if gradebook_soup != None:
+                    self.getGradebook(site_name, gradebook_soup)
 
-                    # go  to tests
-                    tests_soup, session = self.go_to_tests(site_soup, site_session)
-                        #get tests
-                    if tests_soup != None:
-                        self.getTests(site_name, tests_soup)
+                # go  to tests
+                tests_soup, session = self.go_to_tests(site_soup, site_session)
+                    #get tests
+                if tests_soup != None:
+                    self.getTests(site_name, tests_soup)
 
-                except:
-                    pass
-            else:
-                continue
+            except:
+                pass
 
     def print_announcements(self):
         annnouncements = self.database.getAnnouncements()

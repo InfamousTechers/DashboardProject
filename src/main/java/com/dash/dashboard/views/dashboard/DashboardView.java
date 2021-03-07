@@ -108,7 +108,7 @@ public class DashboardView extends HorizontalLayout {
 
         grid.asSingleSelect().addValueChangeListener(evt -> popUpMessage(evt.getValue()));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        Page.add(new H3("Announcement"));
+//        Page.add(new H3("Announcement"));
         Page.add(grid);
     }
 
@@ -133,7 +133,7 @@ public class DashboardView extends HorizontalLayout {
 
         grid.asSingleSelect().addValueChangeListener(event -> popUpAssMessage(event.getValue()));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        Page.add(new H3("Assignments"));
+//        Page.add(new H3("Assignments"));
         Page.add(grid);
     }
 
@@ -153,7 +153,7 @@ public class DashboardView extends HorizontalLayout {
         grid.addColumn(Test::getDueDate).setHeader("Due Date");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        Page.add(new H3("Tests"));
+//        Page.add(new H3("Tests"));
         Page.add(grid);
     }
 
@@ -173,7 +173,7 @@ public class DashboardView extends HorizontalLayout {
 
         grid.asSingleSelect().addValueChangeListener(event -> showPercentage(event.getValue()));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        Page.add(new H3("Gradebook"));
+//        Page.add(new H3("Gradebook"));
         Page.add(grid);
     }
 

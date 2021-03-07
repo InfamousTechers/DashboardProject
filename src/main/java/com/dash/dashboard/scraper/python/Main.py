@@ -12,7 +12,6 @@ vula = Vula(studentNumber, password)
 try:
     print("logging in...")
     sites = Site(vula.login())
-    print("You are now logged in")
     print()
     print("Gathering your data...")
     sites.scrape()

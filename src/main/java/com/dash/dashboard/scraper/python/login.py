@@ -23,7 +23,7 @@ class Vula:
                 soup = BeautifulSoup(home.text, "html.parser")
                 return soup, session
             except:
-                pass
+                print("Please Check your username and password and try again!!") #TODO: DELETE BEFORE DEPLOY
 
     def getSites(self, soup, session):
         sitesLink = soup.find_all('a', class_ = "Mrphs-toolsNav__menuitem--link")[5]['href']
