@@ -12,7 +12,6 @@ import com.dash.dashboard.workspaceClasses.Task;
 import com.flowingcode.vaadin.addons.simpletimer.SimpleTimer;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
-//import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -70,7 +69,7 @@ public class WorkspaceView extends VerticalLayout {
         Div calcPage = new Div();
         calcFunc(calcPage);
 
-        Tab timer = new Tab("Pomodoro Timer");
+        Tab timer = new Tab("Timer");
         Div timerPage = new Div();
         timerFunc(timerPage);
 
@@ -104,8 +103,8 @@ public class WorkspaceView extends VerticalLayout {
      * Functions for the pages
      */
 
-    private void todoFunc(Div Page) {
-        Page.add(new H3("To-do List"));
+    private void todoFunc(Div page) {
+        page.add(new H3("To-do List"));
 
         List<Task> tasks = new ArrayList<>();
         Grid<Task> taskGrid = new Grid<>();
@@ -132,11 +131,11 @@ public class WorkspaceView extends VerticalLayout {
             taskDialog.add(new H3("Add Task"), task, add);
         });
 
-        Page.add(addTask, taskGrid);
+        page.add(addTask, taskGrid);
     }
 
-    private void noteFunc(Div Page){
-        Page.add(new H3("Notes"));
+    private void noteFunc(Div page){
+        page.add(new H3("Notes"));
 
         Button addNote = new Button("Add Note", new Icon(VaadinIcon.PLUS), event -> {
             VerticalLayout noteLayout = new VerticalLayout();
@@ -150,13 +149,13 @@ public class WorkspaceView extends VerticalLayout {
                 Details noteDetails = new Details();
                 noteDetails.setSummaryText(noteHeader.getValue());
                 Button del = new Button(new Icon(VaadinIcon.TRASH), e -> {
-                    Page.remove(noteDetails);
+                    page.remove(noteDetails);
                 });
                 del.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY);
                 addLayout.add(new Text(note.getValue()), del);
                 noteDetails.addContent(addLayout);
                 noteDetails.addThemeVariants(DetailsVariant.FILLED);
-                Page.add(noteDetails);
+                page.add(noteDetails);
                 Notification.show("Note (" + noteHeader.getValue() + ") added.");
                 noteDialog.close();
             });
@@ -164,11 +163,11 @@ public class WorkspaceView extends VerticalLayout {
             noteDialog.add(noteLayout);
             noteLayout.add(noteHeader, note, add);
         });
-        Page.add(addNote);
+        page.add(addNote);
     }
 
-    private void calcFunc(Div Page){
-        Page.add(new H3("Calculator"));
+    private void calcFunc(Div page){
+        page.add(new H3("Calculator"));
         HorizontalLayout calcDivs = new HorizontalLayout();
         Div calc = new Div();
         calc.setWidth("50%");
@@ -288,96 +287,67 @@ public class WorkspaceView extends VerticalLayout {
         calc.add(calcLayout);
         hisDetails.addContent(calcHisLayout);
         calcHistory.add(hisDetails);
-        Page.add(calcDivs);
+        page.add(calcDivs);
         calcDivs.add(calc, calcHistory);
     }
 
-    private void timerFunc(Div Page){
-        VerticalLayout home = new VerticalLayout();
-        home.add(new H3("Timer"));
-        home.add(new Button("Simple Timer", click -> {
-            VerticalLayout simpleTimer = new VerticalLayout();
-            SimpleTimer timer = new SimpleTimer();
-            timer.setWidth("100px");
-            timer.setHeight("50px");
-            timer.getStyle().set("font-size", "40px");
-        
-            Span timerTitle = new Span("Simple Count Up Timer");
-        
-            TextField startTime = new TextField("Start Time", e -> timer.setStartTime(new BigDecimal(e.getValue())));
-            Checkbox countUp = new Checkbox("Count Up", false);
-                countUp.addValueChangeListener(e -> {
-                    timer.setCountUp(countUp.getValue());
-                    if (e.getValue()) {
-                        startTime.setLabel("End Time");
-                        timerTitle.setText("Simple Count Up Timer");
-                    } else {
-                        startTime.setLabel("Start Time");
-                        timerTitle.setText("Simple Countdown Timer");
-                    }
-                });
-            Button start = new Button("Start/Stop", e -> timer.start());
-            Button stop = new Button("Stop", e -> timer.pause());
-            Button reset = new Button("Reset", e -> {
-                timer.reset();
+    private void timerFunc(Div page){
+        page.add(new H3("Timer"));
+        VerticalLayout simpleTimer = new VerticalLayout();
+        SimpleTimer timer = new SimpleTimer();
+        timer.setWidth("100px");
+        timer.setHeight("50px");
+        timer.getStyle().set("font-size", "40px");
+    
+        Span timerTitle = new Span("Simple Count Up Timer");
+    
+        TextField startTime = new TextField("Start Time", e -> timer.setStartTime(new BigDecimal(e.getValue())));
+        Checkbox countUp = new Checkbox("Count Up", false);
+            countUp.addValueChangeListener(e -> {
+                timer.setCountUp(countUp.getValue());
+                if (e.getValue()) {
+                    startTime.setLabel("End Time");
+                    timerTitle.setText("Simple Count Up Timer");
+                } else {
+                    startTime.setLabel("Start Time");
+                    timerTitle.setText("Simple Countdown Timer");
+                }
             });
-            Button running = new Button("Current Time", e -> timer.getCurrentTimeAsync().thenAccept(
-                time -> Notification.show(time.toPlainString() + (timer.isRunning() ? "" : " (Not Running)"))
-            ));
-            Checkbox fractions = new Checkbox("Fractions", true);
-            fractions.addValueChangeListener(e -> timer.setFractions(e.getValue()));
-            Checkbox minutes = new Checkbox("Minutes", e -> timer.setMinutes(e.getValue()));
-            Checkbox hours = new Checkbox("Hours", e -> timer.setHours(e.getValue()));
-            Checkbox visible = new Checkbox("Visible", e->{
-                if (e.isFromClient()) timer.setVisible(!timer.isVisible());     
-            });
-            visible.setValue(true);
+        Button start = new Button("Start/Stop", e -> timer.start());
+        Button stop = new Button("Stop", e -> timer.pause());
+        Button reset = new Button("Reset", e -> {
+            timer.reset();
+        });
+        Button running = new Button("Current Time", e -> timer.getCurrentTimeAsync().thenAccept(
+            time -> Notification.show(time.toPlainString() + (timer.isRunning() ? "" : " (Not Running)"))
+        ));
+        Checkbox fractions = new Checkbox("Fractions", true);
+        fractions.addValueChangeListener(e -> timer.setFractions(e.getValue()));
+        Checkbox minutes = new Checkbox("Minutes", e -> timer.setMinutes(e.getValue()));
+        Checkbox hours = new Checkbox("Hours", e -> timer.setHours(e.getValue()));
+        Checkbox visible = new Checkbox("Visible", e->{
+            if (e.isFromClient()) timer.setVisible(!timer.isVisible());     
+        });
+        visible.setValue(true);
 
-            timer.addTimerEndEvent(e -> Notification.show("Timer Ended"));
+        timer.addTimerEndEvent(e -> Notification.show("Timer Ended"));
 
-            HorizontalLayout topLayout = new HorizontalLayout(timerTitle, timer);
-            topLayout.setAlignItems(Alignment.CENTER);
+        HorizontalLayout topLayout = new HorizontalLayout(timerTitle, timer);
+        topLayout.setAlignItems(Alignment.CENTER);
 
-            HorizontalLayout options = new HorizontalLayout(countUp, fractions, minutes, hours, visible);
-            options.setAlignItems(Alignment.CENTER);
-        
-            HorizontalLayout bottomLayout = new HorizontalLayout(start, stop, reset, running);
-            bottomLayout.setAlignItems(Alignment.BASELINE);
-        
-            simpleTimer.add(new VerticalLayout(topLayout, startTime, options, bottomLayout));
-            simpleTimer.add(new Button("Home", evt -> {
-                Page.remove(simpleTimer);
-                Page.add(home);
-            }));
-            Page.remove(home);
-            Page.add(simpleTimer);
-        }));
-        
-        home.add(new Button("Pomodoro Timer", click -> {
-            VerticalLayout pomoTimer = new VerticalLayout();
-            VerticalLayout dialog = new VerticalLayout();
-            Dialog pomoDialog = new Dialog();
-            dialog.add(new H3("Pomodoro Technique:"));
-            dialog.add(new Text("The Pomodoro Technique is created by Francesco Cirillo for a more productive way to work and study. The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen timer that Cirillo used as a university student."));
-            dialog.add(new Button("Next", evt -> {
-                pomoDialog.close();
-                pomoTabs(pomoTimer);
-                pomoTimer.add(new Button("Home", e -> {
-                    Page.remove(pomoTimer);
-                    Page.add(home);
-                }));
-                Page.remove(home);
-                Page.add(pomoTimer);
-            }));
-            pomoDialog.add(dialog);
-            pomoDialog.open();
-        }));
-        
-        Page.add(home);
+        HorizontalLayout options = new HorizontalLayout(countUp, fractions, minutes, hours, visible);
+        options.setAlignItems(Alignment.CENTER);
+    
+        HorizontalLayout bottomLayout = new HorizontalLayout(start, stop, reset, running);
+        bottomLayout.setAlignItems(Alignment.BASELINE);
+    
+        simpleTimer.add(new VerticalLayout(topLayout, startTime, options, bottomLayout));
+        page.add(simpleTimer);
     }
+    
 
-    private void calFunc(Div Page){
-        Page.setText("Calender");
+    private void calFunc(Div page){
+        page.setText("Calender");
     }
 
 
@@ -509,85 +479,6 @@ public class WorkspaceView extends VerticalLayout {
         }
         display.setLabel(display.getLabel() + display.getValue() + opr);
         display.setValue("0");
-    }
-
-
-    // POMODORO
-    private void pomoTabs(VerticalLayout Page){
-        Tab pomo = new Tab("Pomodoro");
-        Div pomoPage = new Div();
-        pomoFunc(pomoPage);
-
-        Tab shortB = new Tab("Short Break");
-        Div shortBPage = new Div();
-        sBFunc(shortBPage);
-
-        Tab longB = new Tab("Long Break");
-        Div longBPage = new Div();
-        lBFunc(longBPage);
-
-        Map<Tab, Component> tabsToPages = new HashMap<>();
-        tabsToPages.put(pomo, pomoPage);
-        tabsToPages.put(shortB, shortBPage);
-        tabsToPages.put(longB, longBPage);
-        tabs = new Tabs(pomo, shortB, longB);
-        tabs.setFlexGrowForEnclosedTabs(1);
-        Div pages = new Div(pomoPage, shortBPage, longBPage);
-
-        tabs.addSelectedChangeListener(event -> {
-            tabsToPages.values().forEach(page -> page.setVisible(false));
-            Component selectedPage = tabsToPages.get(tabs.getSelectedTab());
-            selectedPage.setVisible(true);
-        });
-
-        tabs.setSelectedTab(shortB);
-        tabs.setSelectedTab(pomo);
-
-        Page.add(tabs, pages);
-    }
-
-    private void pomoFunc(Div Page){
-        Page.add(time(1500));
-    }
-    
-    private void sBFunc(Div Page){
-        Page.add(time(300));
-    }
-    private void lBFunc(Div Page){
-        Page.add(time(900));
-    }
-    
-    private VerticalLayout time(int sec){
-        SimpleTimer timer = new SimpleTimer();
-        timer.getStyle().set("font-size", "80px");
-        timer.setFractions(true);
-        timer.setMinutes(true);
-        timer.setStartTime(new BigDecimal(sec));
-        timer.start();
-        timer.pause();
-        timer.addTimerEndEvent(e -> {
-            String message = "";
-            switch (sec){
-                case 1500:
-                    message = "Nice sesion, REST";
-                    break;
-                case 900:
-                    message = "Time to GO again!";
-                    break;
-                case 300:
-                    message = "Break over...";
-                    break;
-            }
-            Notification.show(message);
-            timer.reset();
-            timer.start();
-            timer.pause();
-        });
-        Button start = new Button("Start", e -> timer.start());
-        VerticalLayout timee = new VerticalLayout();
-        timee.add(timer, start);
-        timee.setAlignItems(Alignment.CENTER);
-        return timee;
     }
 
 }
