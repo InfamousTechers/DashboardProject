@@ -5,13 +5,15 @@ import com.dash.dashboard.scraper.java.AssignmentsTable;
 import com.dash.dashboard.scraper.java.GradebookTable;
 import com.dash.dashboard.scraper.java.TestsTable;
 import com.vaadin.flow.component.Component;
-//import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+<<<<<<< HEAD
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
+=======
+>>>>>>> 579ced419a14b8658a57ad95258efaddb253f8f6
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -21,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-//import com.vaadin.flow.component.textfield.TextField;
 
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -40,7 +40,6 @@ public class DashboardView extends HorizontalLayout {
 	 */
 
 	private static final long serialVersionUID = -7468284506066059747L;
-    private Tabs tabs;
 
     public DashboardView() {
         setId("dashboard-view");
@@ -48,6 +47,7 @@ public class DashboardView extends HorizontalLayout {
     }
 
     private void dashTabs(){
+        Tabs tabs;
         Tab emails = new Tab("Announcements");
         Div emailsPage = new Div();
         emailsFunc(emailsPage);
@@ -94,7 +94,7 @@ public class DashboardView extends HorizontalLayout {
         resultsPage.add(new H2("Analyse results from the 'GradeBook'"));
     }
 
-    private void emailsFunc(Div Page){
+    private void emailsFunc(Div page){
         List<Announcement> announcements;
         AnnouncementsTable announcementsTable = new AnnouncementsTable();
 
@@ -109,8 +109,7 @@ public class DashboardView extends HorizontalLayout {
 
         grid.asSingleSelect().addValueChangeListener(evt -> popUpMessage(evt.getValue()));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-//        Page.add(new H3("Announcement"));
-        Page.add(grid);
+        page.add(grid);
     }
 
     private void popUpMessage(Announcement value) {
@@ -118,7 +117,7 @@ public class DashboardView extends HorizontalLayout {
         notification.open();
     }
 
-    private void assFunc(Div Page){
+    private void assFunc(Div page){
 
         List<Assignment> assignments;
         AssignmentsTable assignmentsTable = new AssignmentsTable();
@@ -134,8 +133,7 @@ public class DashboardView extends HorizontalLayout {
 
         grid.asSingleSelect().addValueChangeListener(event -> popUpAssMessage(event.getValue()));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-//        Page.add(new H3("Assignments"));
-        Page.add(grid);
+        page.add(grid);
     }
 
     private void popUpAssMessage(Assignment value) {
@@ -143,7 +141,7 @@ public class DashboardView extends HorizontalLayout {
         notification.open();
     }
 
-    private void testsFunc(Div Page){
+    private void testsFunc(Div page){
         List<Test> tests;
         TestsTable testsTable = new TestsTable();
         tests = testsTable.testList();
@@ -154,11 +152,10 @@ public class DashboardView extends HorizontalLayout {
         grid.addColumn(Test::getDueDate).setHeader("Due Date");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-//        Page.add(new H3("Tests"));
-        Page.add(grid);
+        page.add(grid);
     }
 
-    private void gradebookFunc(Div Page){
+    private void gradebookFunc(Div page){
         List<Gradebook> grades;
         GradebookTable testsTable = new GradebookTable();
 
@@ -174,8 +171,7 @@ public class DashboardView extends HorizontalLayout {
 
         grid.asSingleSelect().addValueChangeListener(event -> showPercentage(event.getValue()));
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT, GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-//        Page.add(new H3("Gradebook"));
-        Page.add(grid);
+        page.add(grid);
     }
 
     private void showPercentage(Gradebook value) {
