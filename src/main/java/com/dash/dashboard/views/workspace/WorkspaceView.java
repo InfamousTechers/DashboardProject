@@ -1,10 +1,8 @@
 package com.dash.dashboard.views.workspace;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 import com.dash.dashboard.views.main.MainView;
 import com.dash.dashboard.workspaceClasses.State;
@@ -16,6 +14,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.details.DetailsVariant;
@@ -41,6 +40,9 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import org.vaadin.stefan.fullcalendar.Entry;
+import org.vaadin.stefan.fullcalendar.FullCalendar;
+import org.vaadin.stefan.fullcalendar.FullCalendarBuilder;
 
 @Route(value = "Workspace", layout = MainView.class)
 @PageTitle("Workspace")
@@ -377,7 +379,10 @@ public class WorkspaceView extends VerticalLayout {
     }
 
     private void calFunc(Div Page){
-        Page.setText("Calender");
+        FullCalendar calendar = FullCalendarBuilder.create().build();
+
+        Page.add(calendar);
+
     }
 
 

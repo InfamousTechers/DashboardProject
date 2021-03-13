@@ -1,11 +1,13 @@
 from login import Vula
 from sites import Site
+import getpass
+
 
 print("Hi!")
 
 studentNumber = input("Please enter your UCT Student Number: ")
 
-password = input("Please enter password: ")
+password = getpass.getpass(prompt= "Please enter password: ")
 
 vula = Vula(studentNumber, password)
 

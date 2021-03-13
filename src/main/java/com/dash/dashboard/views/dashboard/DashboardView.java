@@ -10,6 +10,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -90,7 +91,7 @@ public class DashboardView extends HorizontalLayout {
     }
 
     private void resultsAnalysisFunc(Div resultsPage) {
-        resultsPage.add("Analyse results from the 'GradeBook'");
+        resultsPage.add(new H2("Analyse results from the 'GradeBook'"));
     }
 
     private void emailsFunc(Div Page){

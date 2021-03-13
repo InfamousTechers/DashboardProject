@@ -1,4 +1,4 @@
-
+import concurrent.futures
 from datetime import date, datetime, timedelta
 from bs4 import BeautifulSoup
 from databases import Database
@@ -27,7 +27,7 @@ class Site:
                 rows = table.findAll("tr")[1:]
                 for row in rows:
                     date = row.find("td", {"headers":"date"}).string.strip()
-                    if self.isRecent(date, 30):
+                    if self.isRecent(date, 60):
                         subject = row.find("a")["title"]
                         author = row.find("td", {"headers":"author"}).string.strip()
                         link = row.find("a")["href"]
@@ -109,7 +109,6 @@ class Site:
         except:
             return None, None
 
-
     def month_number(self, month):
         month_to_number = {
             'January' : 1,         
@@ -177,8 +176,9 @@ class Site:
         current_month = date.today().month
         current_day = date.today().day
 
-        if announcementDate[2] == current_year or announcementDate[2] == n_days_ago_year:
-            return True
+        if (announcementDate[2] == current_year or announcementDate[2] == n_days_ago_year):
+            if (self.month_number(announcementDate[1]) == current_month or (self.month_number(announcementDate[1]) - n_days_ago_month == 1)):
+                return True
         else:
             return False
 
@@ -190,7 +190,6 @@ class Site:
         #     return True
         # elif  announcementDate[2] == current_year and month_number(announcementDate[1]) < n_days_ago_month:
         #     return False
-
 
     def scrape(self):
         # get site name
@@ -212,6 +211,9 @@ class Site:
                 # #     # get announcements
                 if announcements_soup != None:
                     self.getAnnouncements(site_name, announcements_soup)
+                
+                # with concurrent.futures.ProcessPoolExecutor() as executor:
+                #     f1 = executor.submit(getAnnouncements,(site_name, announcements_soup))
 
                 # # # go  to assignments
                 assignments_soup, session = self.go_to_assignments(site_soup, site_session)
