@@ -1,7 +1,6 @@
 package com.dash.dashboard.views.workspace;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 
 import com.dash.dashboard.views.main.MainView;
@@ -13,7 +12,6 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.details.DetailsVariant;
@@ -39,11 +37,10 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import org.vaadin.stefan.fullcalendar.Entry;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
 import org.vaadin.stefan.fullcalendar.FullCalendarBuilder;
 
-@Route(value = "Workspace", layout = MainView.class)
+@Route(value = "", layout = MainView.class)
 @PageTitle("Workspace")
 @CssImport("./styles/views/dashboard/dashboard-view.css")
 @RouteAlias(value = "workspace", layout = MainView.class)

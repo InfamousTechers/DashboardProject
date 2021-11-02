@@ -34,11 +34,6 @@
             <url>https://maven.vaadin.com/vaadin-addons</url>
         </repository>
 
-        <repository>
-            <id>vaadin-addons</id>
-            <url>https://maven.vaadin.com/vaadin-addons</url>
-        </repository>
-
         <!-- Repository used by many Vaadin add-ons -->
         <repository>
             <id>Vaadin Directory</id>
@@ -46,11 +41,6 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-
-        <repository>
-           <id>vaadin-addons</id>
-           <url>https://maven.vaadin.com/vaadin-addons</url>
         </repository>
     </repositories>
 

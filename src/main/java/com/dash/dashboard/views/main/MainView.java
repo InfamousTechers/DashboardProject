@@ -23,7 +23,6 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import com.dash.dashboard.views.main.MainView;
 import com.dash.dashboard.views.workspace.WorkspaceView;
-import com.dash.dashboard.views.dashboard.DashboardView;
 import com.dash.dashboard.views.about.AboutView;
 import com.vaadin.flow.theme.lumo.Lumo;
 
@@ -91,7 +90,6 @@ public class MainView extends AppLayout {
 
     private Component[] createMenuItems() {
         return new Tab[]{
-            createTab("Dashboard", DashboardView.class),
             createTab("Workspace", WorkspaceView.class),
             createTab("About", AboutView.class)
         };
