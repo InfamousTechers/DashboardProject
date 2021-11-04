@@ -1,9 +1,7 @@
 # Dashboard
 
-This is an example project that can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
-
-The project is a standard Maven project, so you can import it to your IDE of choice. [Read more how to set up a development environment](https://vaadin.com/docs/v14/flow/installing/installing-overview.html) for Vaadin projects (Windows, Linux, macOS). 
+This is a practise project that we used to learn the Java Framework Vaadin.
+It is a basic workspace tools application that include tools like a To-do List, Notes, Calculator, Timer and a Calender.
 
 This project was created from https://start.vaadin.com.
 
@@ -11,6 +9,9 @@ This project was created from https://start.vaadin.com.
 
 ### Running the application from the command line.
 To run from the command line, use `mvn` and open http://localhost:8080 in your browser.
+```
+mvn spring-boot:run -f "pom.xml"
+```
 
 ### Running and debugging the application in Intellij IDEA
 - Locate the Application.java class in the Project view. It is in the src folder, under the main package's root.
@@ -34,10 +35,5 @@ You can now also attach break points in code for debugging purposes, by clicking
 - `views` package in `src/main/java` contains the server-side Java views of your application.
 - `views` folder in `frontend/src/` contains the client-side JavaScript views of your application.
 
-## What next?
-
-[vaadin.com](https://vaadin.com) has lots of material to help you get you started:
-
-- Follow the tutorials in [vaadin.com/tutorials](https://vaadin.com/tutorials). Especially [vaadin.com/tutorials/getting-started-with-flow](https://vaadin.com/tutorials/getting-started-with-flow) is good for getting a grasp of the basic Vaadin concepts.
-- Read the documentation in [vaadin.com/docs](https://vaadin.com/docs).
-- For a bigger Vaadin application example, check out the Full Stack App starter from [vaadin.com/start](https://vaadin.com/start).
+## What we've learnt?
+This project helped us learn how to use Maven to manage Java projects as we were both new to it. Also got to learn how to utilize pre-built components and merge them with other components to create desired output. This also improved our use of Git and proper collaboration.

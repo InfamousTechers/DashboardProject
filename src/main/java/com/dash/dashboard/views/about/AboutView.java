@@ -1,7 +1,7 @@
 package com.dash.dashboard.views.about;
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.dash.dashboard.views.main.MainView;
@@ -17,7 +17,7 @@ public class AboutView extends Div {
 
 	public AboutView() {
         setId("about-view");
-        add(new Text("Boii this vaadin framework is fire!!!\nLet's make magic!"));
+        add(new H2("Basic workspace tools web application created by Comfort Twala and Brandon Pahla with Vaadin Java Framework."));
     }
 
 }
