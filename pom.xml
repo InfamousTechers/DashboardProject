@@ -101,6 +101,14 @@
                 <artifactId>simple-timer</artifactId>
                 <version>2.1.0</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/it.marplex.cloudflarebypass/cloudflare-bypass -->
+            <dependency>
+                <groupId>it.marplex.cloudflarebypass</groupId>
+                <artifactId>cloudflare-bypass</artifactId>
+                <version>1.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
